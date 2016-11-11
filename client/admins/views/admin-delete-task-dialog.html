@@ -1,0 +1,15 @@
+<md-dialog aria-label="deleteTask" ng-cloak>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      Вы действительно хотите удалить это задание?
+      <section layout="row" layout-align="center center" layout-wrap>
+        <md-button type="submit" class="md-raised md-primary" ng-click="deleteTask.deleteTask()" aria-label="delete task">
+          УДАЛИТЬ
+        </md-button>
+        <md-button class="md-raised md-warn" ng-click="hide()" aria-label="not delete task">
+          НЕ УДАЛЯТЬ
+        </md-button>
+      </section>
+    </div>
+  </md-dialog-content>
+</md-dialog>

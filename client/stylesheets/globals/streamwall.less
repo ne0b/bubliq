@@ -1,0 +1,23 @@
+@import './variables.less';
+
+.b-show-reports-link{
+  text-decoration: none;
+  color: @typicalBlueColor !important;
+  font-weight: bold;
+  padding: 9px;
+  cursor:pointer;
+}
+
+.streamwall-task-desc.showless {
+  .b-task-blur-bottom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: -moz-linear-gradient(top,  @transparentWhite 0%, @transparentKindaWhite 50%, @grayishWhite 100%);
+    background: -webkit-linear-gradient(top,  @transparentWhite 0%, @transparentKindaWhite 50%, @grayishWhite 100%);
+    background: linear-gradient(to bottom,  @transparentWhite 0%, @transparentKindaWhite 50%, @grayishWhite 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#f7f7f9',GradientType=0 );
+  }
+}

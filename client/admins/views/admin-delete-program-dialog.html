@@ -1,0 +1,15 @@
+<md-dialog aria-label="deleteProgram" ng-cloak>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      Вы действительно хотите удалить эту программу?
+      <section layout="row" layout-align="center center" layout-wrap>
+        <md-button type="submit" class="md-raised md-primary" ng-click="deleteProgram.deleteProgram()" aria-label="delete program">
+          УДАЛИТЬ
+        </md-button>
+        <md-button class="md-raised md-warn" ng-click="hide()" aria-label="not delete program">
+          НЕ УДАЛЯТЬ
+        </md-button>
+      </section>
+    </div>
+  </md-dialog-content>
+</md-dialog>

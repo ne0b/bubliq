@@ -1,0 +1,151 @@
+.transparent-frame.content-transparent-frame.chat-list-container {
+  max-width: 95%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 14px 0;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.chat-list-pane {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.chat-list--init-chat {
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+
+  & .material-icons {
+    font-size: 2em;
+    top: 0.3em;
+  }
+}
+
+.chat-list {
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
+
+  &:last-child {
+    border-bottom: 0;
+    padding-bottom: 64px;
+  }
+}
+
+.chat-list--header{
+  padding: 14px;
+  font-weight: 500;
+  font-size: 0.9em;
+  color: rgba(0,0,0,0.48);
+}
+
+.chat-list--chat {
+  padding: 14px 46px 14px 72px;
+  display: block;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  text-transform: none;
+  color: rgba(0,0,0,0.72);
+  cursor: pointer;
+
+
+
+  & .chat-list--chat-badge {
+    position: absolute;
+    background: #ff4081;
+    right: 0;
+    top: 0;
+    border-radius: 1em;
+    min-width: 1.2em;
+    padding: 0 0.1em;
+    text-align: center;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: -1px;
+  }
+
+  &.chat-news {
+    color: rgba(0,0,0,0.99);
+    background-color: darken(whitesmoke, 2%);
+
+
+  }
+
+  &:hover {
+    background-color: darken(whitesmoke, 4%);
+  }
+
+  & .chat-list--chat-details {
+    padding-top: 6px;
+    font-size: 0.8em;
+    color: rgba(0,0,0,0.50);
+  }
+
+  & .chat-list--chat-body {
+    position: relative;
+  }
+
+  & .chat-list--chat-header {
+    max-height: 1.2em;
+    overflow: hidden;
+  }
+
+  & .chat-list--chat-config {
+    position: absolute;
+    top: 1.1em;
+    right: 0.4em;
+
+    & .material-icons {
+      font-size: 1.4em;
+      color: rgba(0,0,0,0.50);
+      z-index: 1;
+    }
+  }
+
+  & .chat-list--chat-avatar {
+    position: absolute;
+    left: 0.8em;
+    top: 0.7em;
+
+    & img {
+      width: 40px;
+      height: 40px;
+      border-radius: 100%;
+    }
+
+    & .material-icons {
+      color: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(0, 0, 0, 0.3);
+      font-size: 1.5em;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      border-radius: 100%;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-list--chat {
+    padding-left: 64px;
+
+    & .chat-list--chat-details {
+      padding-top: 0px;
+    }
+
+    & .chat-list--chat-avatar {
+      top: 0.6em;
+
+      & .material-icons {
+        border: 0;
+      }
+    }
+  }
+}

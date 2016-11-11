@@ -1,0 +1,6 @@
+<md-input-container class="b-toolbar-sort-select-container">
+  <label>{{ sortView.label }}</label>
+  <md-select ng-model="sortBy">
+    <md-option ng-value="sortBy.value" ng-repeat="sortBy in sortView.sortArray">{{ sortBy.title }}</md-option>
+  </md-select>
+</md-input-container>

@@ -1,0 +1,98 @@
+.docs-menu, .docs-menu ul {
+    list-style: none;
+    padding: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    margin-top:0px;
+}
+.docs-menu > li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.95);
+}
+.docs-menu li {
+    margin: 0;
+}
+ul li {
+    margin-left: 16px;
+    padding: 0;
+    margin-top: 3px;
+    list-style-position: inside;
+}
+ul li:first-child {
+    margin-top: 0;
+}
+.menu-toggle-list {
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    -webkit-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+    -webkit-transition-property: height;
+    -moz-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+    -moz-transition-property: height;
+    transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+    transition-property: height;
+
+    a {
+      font-size: 14px !important;
+      line-height: 28px !important;
+      max-height: 28px !important;
+      height: 28px;
+      min-height: 28px;
+    }
+}
+
+.docs-menu .menu-toggle-list a.md-button {
+    display: block;
+    padding: 0 16px 0 32px;
+    text-transform: none;
+    text-rendering: optimizeLegibility;
+    font-weight: 500;
+    font-weight: normal;
+}
+.docs-menu .md-button {
+    border-radius: 0;
+    cursor: pointer;
+    display: block;
+    align-items: inherit;
+    line-height: 40px;
+    margin: 0;
+    max-height: 40px;
+    overflow: hidden;
+    padding: 0px 16px;
+    text-align: left;
+    text-decoration: none;
+    white-space: normal;
+    width: 100%;
+    text-transform: none;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.md-button-toggle .md-toggle-icon {
+    display: block;
+    margin-left: auto;
+    speak: none;
+    vertical-align: middle;
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transition: transform 0.3s ease-in-out;
+    -webkit-transition: -webkit-transform 0.3s ease-in-out;
+}
+
+.md-button-toggle .md-toggle-icon.toggled {
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+}
+
+.b-solo-program{
+  position: relative;
+
+  .menu-icon {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+  }
+
+  .md-button {
+    padding-left: 45px;
+  }
+}

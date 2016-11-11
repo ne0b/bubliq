@@ -1,0 +1,211 @@
+<md-progress-circular ng-if="!tasksDetails.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+<md-subheader ng-if="tasksDetails.dataReady==='error'" class="md-primary">{{ tasksDetails.dataError }}</md-subheader>
+
+<div flex layout="row" layout-align="center" layout-wrap ng-if="tasksDetails.dataReady && tasksDetails.giventask">
+  <div flex-lg="95" flex-gt-lg="95" flex-md="95" flex-sm="100" class="transparent-frame content-transparent-frame">
+    <div layout="row" layout-wrap>
+      <div style="width:250px;" layout="column">
+        <md-card>
+          <a ui-sref="profileview({userId:tasksDetails.giventask.owner._id})">
+            <img ng-src="{{ tasksDetails.giventask.owner.profile.avatar.url.cropped }}" ng-style="tasksDetails.giventask.owner.profile.avatar.style" class="md-card-image">
+          </a>
+          <md-card-content style="position: relative;">
+            <div>{{ tasksDetails.giventask.owner.profile.name }} {{ tasksDetails.giventask.owner.profile.lastname }}</div>
+            <div class="giventask-grade" ng-if="$root.currentUser && tasksDetails.giventask.task.maxgrade">
+              <span ng-if="(!tasksDetails.getTasksReview || tasksDetails.giventask.userId === $root.currentUser._id) && (tasksDetails.giventask.grade || tasksDetails.giventask.grade === 0)">{{ tasksDetails.giventask.grade }}</span>
+              <span ng-if="(!tasksDetails.getTasksReview || tasksDetails.giventask.userId === $root.currentUser._id) && !tasksDetails.giventask.grade && tasksDetails.giventask.grade !== 0">Нет</span>
+              <md-input-container class="md-block md-grade-container" ng-if="tasksDetails.getTasksReview && tasksDetails.giventask.userId !== $root.currentUser._id">
+                <label>Оценка</label>
+                <input name="user context grade" id="contextgrade" type="number" ng-model="tasksDetails.giventask.grade">
+              </md-input-container>
+              <md-button style="top: 0;left: 50%;" ng-if="tasksDetails.getTasksReview && tasksDetails.giventask.userId !== $root.currentUser._id" ng-click="tasksDetails.rateTask()" class="rate-user-button md-icon-button md-primary" aria-label="save task grade">
+                <md-icon class="menu-icon menu-icon--black" md-svg-icon="action:ic_done_24px"></md-icon>
+                <md-tooltip md-direction="bottom">
+                  сохранить оценку
+                </md-tooltip>
+              </md-button>
+              <div class="giventask-status-block">
+                <md-icon class="menu-icon" md-svg-icon="{{ tasksDetails.giventask.statusIcon.icon }}" style="color: {{ tasksDetails.giventask.statusIcon.color }} !important;">
+                  <md-tooltip md-direction="bottom">
+                    {{ tasksDetails.giventask.statusIcon.status }}
+                  </md-tooltip>
+                </md-icon>
+              </div>
+            </div>
+            <div class="giventask-giventime">
+              <span>
+                {{ tasksDetails.giventask.starttime }}
+                <md-tooltip md-direction="bottom">
+                  Дата выдачи
+                </md-tooltip>
+              </span>
+            </div>
+          </md-card-content>
+        </md-card>
+      </div>
+      <div class="giventask-deadline-block" layout="column">
+        <div>
+          <span>
+            12:00 {{ tasksDetails.giventask.endtime }}
+            <md-tooltip md-direction="bottom">
+              Сделать до
+            </md-tooltip>
+          </span>
+        </div>
+        <div style="color: {{ tasksDetails.giventask.titleColor }};margin-top: 15px;">
+          {{ tasksDetails.giventask.task.title }}
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="fr-view fr-view--space" ng-bind-html="tasksDetails.giventask.task.desc"></div>
+    </div>
+    <md-divider></md-divider>
+
+    <div style="padding: 10px;overflow: initial;" ng-if="$root.currentUser">
+      <h3 class="margin-reset" style="position: relative;overflow: initial;">
+        <div class="b-like-button m-margin-left-10 margin-reset m-min-height" ng-class="{ 'b-self-like-button': $root.currentUser._id === tasksDetails.giventask.userId }">
+          <a style="{{ tasksDetails.giventask.userLikeColor }}" ng-click="tasksDetails.like(tasksDetails.giventask._id)">
+            <md-icon class="menu-icon" style="{{ tasksDetails.giventask.userLikeColor }}" md-svg-icon="action:ic_favorite_24px"></md-icon>
+            {{ tasksDetails.giventask.likescount }}
+          </a>
+        </div>
+        <task-likes likes="tasksDetails.giventask.likes" ng-if="tasksDetails.giventask.likes && tasksDetails.giventask.likes.length > 0"></task-likes>
+      </h3>
+    </div>
+    <md-divider ng-if="$root.currentUser"></md-divider>
+
+    <h4 class="task-custom-header">
+      Отчет
+      <span ng-if="tasksDetails.giventask.report && tasksDetails.giventask.report.reportSendAt">
+        {{ tasksDetails.reportSentTime(tasksDetails.giventask.report.reportSendAt) }}
+        <md-tooltip md-direction="top">
+          Время отправки отчета
+        </md-tooltip>
+      </span>
+      <div class="social-block" ng-if="$root.currentUser && tasksDetails.giventask.task.shareable && tasksDetails.giventask.report && tasksDetails.giventask.report.reportSendAt && tasksDetails.giventask.userId===$root.currentUser._id">
+        <md-button class="social-button" ng-click="tasksDetails.editShare()" style="left: 15px;" aria-label="share text">
+          <md-icon class="menu-icon menu-icon--black" md-svg-icon="social:ic_share_24px" ></md-icon>
+          <md-tooltip md-direction="top">
+            Текст расшаривания
+          </md-tooltip>
+        </md-button>
+        <md-button ng-if="tasksDetails.giventask.shareText" class="social-button sharer" sharerfb data-url="https://entry.spacebagel.com/shares/{{ tasksDetails.giventask._id }}" style="left: 50px;" aria-label="share fb">
+          <div class="social-icon fb"></div>
+          <md-tooltip md-direction="top">
+            Расшарить в FB
+          </md-tooltip>
+        </md-button>
+        <md-button ng-if="tasksDetails.giventask.shareText" class="social-button" sharervk data-title="{{ tasksDetails.giventask.task.shareTitle || tasksDetails.giventask.task.title }}" data-caption="{{ tasksDetails.giventask.report.message | htmlToPlaintext }}" data-url="https://entry.spacebagel.com/shares/{{ tasksDetails.giventask._id }}" data-image="{{ tasksDetails.giventask.report.message | parseImgUrls }}" style="right: 0;" aria-label="share vk">
+          <div class="social-icon vk"></div>
+          <md-tooltip md-direction="top">
+            Расшарить в VK
+          </md-tooltip>
+        </md-button>
+      </div>
+      <div class="b-modified-button-wrapper" ng-if="$root.currentUser && tasksDetails.giventask.report && tasksDetails.giventask.report.reportSendAt && tasksDetails.giventask.userId===$root.currentUser._id" aria-label="editcomment">
+        <div class="b-modified-button m-margin-left-10 margin-reset m-min-height">
+          <a ng-click="tasksDetails.reportEditor()">
+            <md-icon class="menu-icon" md-svg-icon="editor:ic_mode_edit_24px"></md-icon>
+            <md-tooltip md-direction="top">
+              Редактировать
+            </md-tooltip>
+          </a>
+        </div>
+      </div>
+    </h4>
+    <div ng-if="$root.currentUser && !tasksDetails.reportEditMode && tasksDetails.giventask.report" class="fr-view fr-view--space m-overflow-x-hidden" ng-bind-html="tasksDetails.giventask.report.message" ></div>
+    <form ng-if="$root.currentUser && (tasksDetails.reportEditMode || !tasksDetails.giventask.report) && tasksDetails.giventask.userId===$root.currentUser._id" style="margin-top: 15px;margin-bottom: 40px;" ng-click="tasksDetails.reportEditMode=true" class="m-position-relative">
+      <textarea froala="tasksDetails.froalaDesc" name="taskReport" id="taskreport" ng-model="tasksDetails.taskReportMessage"></textarea>
+      <md-button ng-if="!tasksDetails.giventask.report" ng-click="tasksDetails.sendReport($event)" type="submit" class="md-raised b-task-details-send-button md-primary b-task-details-send-button--report" aria-label="send report">
+        ОТПРАВИТЬ
+      </md-button>
+      <md-button ng-if="tasksDetails.giventask.report && tasksDetails.giventask.report.message !== tasksDetails.giventask.draft" ng-click="tasksDetails.sendReport($event)" type="submit" class="md-raised b-task-details-send-button md-primary b-task-details-send-button--report" aria-label="send report">
+        ОБНОВИТЬ
+      </md-button>
+    </form>
+
+    <h4 ng-if="$root.currentUser && tasksDetails.giventask.oldReport" class="task-custom-header">
+      Предыдущая версия отчета
+      <span ng-if="tasksDetails.giventask.oldReport && tasksDetails.giventask.oldReport.reportSendAt">
+        {{ tasksDetails.reportSentTime(tasksDetails.giventask.oldReport.reportSendAt) }}
+        <md-tooltip md-direction="top">
+          Время отправки отчета
+        </md-tooltip>
+      </span>
+    </h4>
+    <div ng-if="$root.currentUser && tasksDetails.giventask.oldReport" class="fr-view fr-view--space m-overflow-x-hidden b-old-report" ng-bind-html="tasksDetails.giventask.oldReport.message" ></div>
+
+    <h4 class="task-custom-header" ng-if="$root.currentUser">
+      <span ng-if="$root.currentUser && tasksDetails.giventask.comments && tasksDetails.giventask.comments.length > 0">Комментарии</span>
+      <md-button ng-if="tasksDetails.giventask.userId !== $root.currentUser._id" class="md-primary b-md-primary-button" ng-click="tasksDetails.subscribeToComments(tasksDetails.giventask._id)">
+        <span ng-if="!tasksDetails.userIsSubscribed">ПОДПИСАТЬСЯ НА КОММЕНТАРИИ</span>
+        <span ng-if="tasksDetails.userIsSubscribed">ОТПИСАТЬСЯ ОТ КОММЕНТАРИЕВ</span>
+      </md-button>
+    </h4>
+    <div ng-if="$root.currentUser" class="chat-message" ng-class="{ 'active':tasksDetails.activeComments[$index] }" ng-repeat="comment in tasksDetails.giventask.comments track by $index" id="{{ $index }}">
+      <div class="chat-message-body">
+        <div class="chat-message-label avatar">
+          <a ui-sref="profileview({ userId: comment.owner._id })">
+            <img ng-src="{{ comment.owner.profile.avatar.url.cropped }}" ng-style="comment.owner.profile.avatar.style">
+          </a>
+        </div>
+        <div class="chat-message-label like" style="{{ comment.userLikeColor }}">
+          <button class="md-secondary md-button md-icon-button" ng-click="tasksDetails.likeComment(tasksDetails.giventask._id, $index)">
+            <md-icon class="b-tasks-like-icon menu-icon" style="{{ comment.userLikeColor }}" md-svg-icon="action:ic_favorite_24px"></md-icon>
+            {{ comment.likescount }}
+          </button>
+        </div>
+        <div class="chat-message-header">
+          <strong>
+            <a class="redirect-link" ui-sref="profileview({ userId: comment.owner._id })">
+              {{ comment.owner.profile.name }} {{ comment.owner.profile.lastname }}
+            </a>
+          </strong>
+          <small>{{ tasksDetails.sentTime(comment.createdAt) }}</small>
+        </div>
+        <div class="chat-message-text" ng-click="tasksDetails.setCommentAsActive($index)">
+          <div class="fr-view m-overflow-x-hidden" ng-if="!tasksDetails.inEditMode[$index]" ng-bind-html="comment.message"></div>
+        </div>
+        <form ng-if="tasksDetails.inEditMode[$index]" class="b-tasks-comment-edit-form m-position-relative">
+          <textarea froala="tasksDetails.froalaComment" name="taskComment" id="taskcomment" ng-init="editedComment=comment.message" ng-model="editedComment"></textarea>
+          <md-button ng-click="tasksDetails.editComment(editedComment, $index, $event)" type="submit" class="md-fab b-task-details-send-button md-primary" aria-label="edit comment">
+            <md-icon md-svg-icon="content:ic_send_24px"></md-icon>
+          </md-button>
+        </form>
+
+        <task-likes likes="comment.likes" ng-if="comment.likes && comment.likes.length > 0"></task-likes>
+
+        <div class="chat-message-actions">
+          <button ng-click="tasksDetails.replyToComment(comment.owner, $index)" class="md-secondary md-button md-ink-ripple hidden-xs" ng-if="$root.currentUser && !(comment.ownerId._id===$root.currentUser._id || comment.ownerId === $root.currentUser._id)">
+            <span>ответить</span>
+          </button>
+          <button ng-click="tasksDetails.replyToComment(comment.owner, $index)" class="md-secondary md-button md-icon-button md-ink-ripple visible-xs" ng-if="$root.currentUser && !(comment.ownerId._id===$root.currentUser._id || comment.ownerId === $root.currentUser._id)">
+            <i class="material-icons"></i>
+          </button>
+          <button ng-click="tasksDetails.openCommentEditor($index)" class="md-secondary md-button md-ink-ripple hidden-xs" ng-if="$root.currentUser && (comment.ownerId._id===$root.currentUser._id || comment.ownerId === $root.currentUser._id || tasksDetails.getModerator)">
+            <span>изменить</span>
+          </button>
+          <button ng-click="tasksDetails.openCommentEditor($index)" class="md-secondary md-button md-icon-button md-ink-ripple visible-xs" ng-if="$root.currentUser && (comment.ownerId._id===$root.currentUser._id || comment.ownerId === $root.currentUser._id || tasksDetails.getModerator)">
+            <i class="material-icons"></i>
+          </button>
+          <button ng-click="tasksDetails.deleteComment($index)" class="md-secondary md-button md-ink-ripple hidden-xs" ng-if="$root.currentUser && (comment.ownerId._id===$root.currentUser._id || comment.ownerId === $root.currentUser._id || tasksDetails.getModerator)">
+            <span>удалить</span>
+          </button>
+          <button ng-click="tasksDetails.deleteComment($index)" class="md-secondary md-button md-icon-button md-ink-ripple visible-xs" ng-if="$root.currentUser && (comment.ownerId._id===$root.currentUser._id || comment.ownerId === $root.currentUser._id || tasksDetails.getModerator)">
+            <i class="material-icons"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="task-custom-header" ng-if="$root.currentUser && tasksDetails.giventask.report && tasksDetails.giventask.report.reportSendAt"> Комментарий <span ng-if="tasksDetails.inReplyToUser" ng-click="tasksDetails.removeReplyTo()">в ответ {{ tasksDetails.inReplyToUser.profile.name }}</span> </h4>
+    <form ng-if="$root.currentUser && tasksDetails.giventask.report && tasksDetails.giventask.report.reportSendAt" class="m-position-relative" style="margin-top: 15px;margin-bottom: 40px;">
+      <textarea froala="tasksDetails.froalaComment" name="taskComment" id="taskcomment" ng-model="tasksDetails.taskcomment"></textarea>
+      <md-button ng-click="tasksDetails.sendComment($event)" type="submit" class="md-fab b-task-details-send-button md-primary" aria-label="send comment">
+        <md-icon md-svg-icon="content:ic_send_24px"></md-icon>
+      </md-button>
+    </form>
+  </div>
+</div>

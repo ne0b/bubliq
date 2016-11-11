@@ -1,0 +1,15 @@
+<md-dialog aria-label="textEdit" ng-cloak>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <form>
+        <textarea froala="froalaDesc" name="shareText" id="shareText" ng-model="text"></textarea>
+      </form>
+
+      <section layout="row" layout-align="center center" layout-wrap>
+        <md-button type="submit" id="edit-text-button" class="md-raised md-primary" ng-click="save()" aria-label="edit text">
+          СОХРАНИТЬ
+        </md-button>
+      </section>
+    </div>
+  </md-dialog-content>
+</md-dialog>

@@ -1,0 +1,89 @@
+# Meteor packages used by this project, one per line.
+# Check this file (and the other files in this directory) into your repository.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+#-------------------------------------------------------------------------------
+# Basic Meteor packages
+#-------------------------------------------------------------------------------
+
+meteor-base
+mobile-experience
+mongo
+jquery
+tracker
+standard-minifiers
+es5-shim
+accounts-password
+less
+email
+check
+random
+force-ssl
+
+#-------------------------------------------------------------------------------
+# 3D Party Meteor packages
+#-------------------------------------------------------------------------------
+
+kadira:debug@3.2.2
+pbastowski:angular-babel@1.3.6
+angular@1.3.11
+percolate:migrations@0.9.8
+angular:angular-messages@1.5.3_1
+alanning:roles@1.2.15
+percolate:synced-cron@1.3.2
+meteorhacks:kadira@2.30.0
+meteorhacks:kadira-profiler@1.3.0
+pfafman:filesaver@1.3.2
+meteorhacks:cluster@1.6.9
+
+
+#-------------------------------------------------------------------------------
+# Could be replaced by NPM
+#-------------------------------------------------------------------------------
+
+hedcet:touch-swipe@1.6.6
+momentjs:moment@2.15.0
+alexk111:ng-img-crop@0.3.2
+froala:editor@2.3.4
+eastamis:angular-froala@0.1.4
+shammar13:busboy@1.0.1
+angular:angular-material@1.0.6
+peerlibrary:xml2js@0.4.8_1
+jparker:crypto-md5@0.1.1
+angularui:angular-ui-router@0.2.15
+rzymek:moment-locale-ru@2.14.1
+angular:angular-cookies@1.5.3_1
+jparker:crypto-sha256@0.1.1
+jparker:crypto-base64@0.1.0
+
+#-------------------------------------------------------------------------------
+# Unknown or depricated
+#-------------------------------------------------------------------------------
+
+session
+
+kadira:dochead@1.5.0
+osv:mongo-counter@0.3.5
+meteorhacks:ssr@2.2.0
+iron:router@1.0.13
+danialfarid:ng-file-upload@5.0.9
+planettraining:material-design-icons@2.2.3
+jazeee:spiderable-longer-timeout@1.2.13
+jasonaibrahim:angular-moment@0.10.2
+mbeaudru:angularjs-scroll-glue@2.0.6
+
+#tmeasday:publish-counts
+#urigo:angular-blaze-template
+#mrt:smart-publish
+#meteorhacks:npm
+#npm-container
+#ostrio:meteor-root
+#pauldowman:dotenv
+#ostrio:loggerfile
+#ostrio:loggermongo
+#standard-minifier-css
+#standard-minifier-js
+#npm-bcrypt
+

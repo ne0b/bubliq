@@ -1,0 +1,123 @@
+<md-dialog aria-label="taskEdit"  ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2> Задание {{ newTaskValues.title }} </h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-icon="content:ic_clear_24px" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <form>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <form name="taskForm">
+          <md-input-container class="md-block">
+            <label>Название</label>
+            <input required name="title" id="tasktitle" type="text" minlength="6" ng-model="newTaskValues.title">
+            <div ng-messages="taskForm.title.$error" ng-show="taskForm.title.$dirty">
+              <div ng-message="required">
+                Это обязательное поле!
+              </div>
+              <div ng-message="minlength">
+                Минимальная длина 6 символов!
+              </div>
+            </div>
+          </md-input-container>
+          <section layout="row" layout-wrap>
+            <md-input-container flex="25" class="md-block">
+              <md-tooltip md-direction="bottom">
+                День выдачи задания от дня старты программы
+              </md-tooltip>
+              <label>День старта</label>
+              <input required name="start" id="start" type="number" ng-model="newTaskValues.start" min="1">
+              <div ng-messages="taskForm.start.$error" ng-show="taskForm.start.$dirty">
+                <div ng-message="required">
+                  Это обязательное поле!
+                </div>
+                <div ng-message="min">
+                  Минимальное значение - 1 день!
+                </div>
+              </div>
+            </md-input-container>
+            <md-input-container flex="25" class="md-block">
+              <md-tooltip md-direction="bottom">
+                В днях
+              </md-tooltip>
+              <label>Продолжительность</label>
+              <input required name="duration" id="taskduration" type="number" ng-model="newTaskValues.duration" min="1">
+              <div ng-messages="taskForm.duration.$error" ng-show="taskForm.duration.$dirty">
+                <div ng-message="required">
+                  Это обязательное поле!
+                </div>
+                <div ng-message="min">
+                  Минимальное значение - 1 день!
+                </div>
+              </div>
+            </md-input-container>
+            <md-input-container flex="25" class="md-block">
+              <md-tooltip md-direction="bottom">
+                День окончания задания от дня старты программы
+              </md-tooltip>
+              <label>День завершения</label>
+              <input required name="end" id="end" type="number" ng-model="newTaskValues.end" disabled="disabled">
+            </md-input-container>
+            <md-input-container flex="25" class="md-block">
+              <label>Тип задания</label>
+              <md-select ng-model="newTaskValues.type">
+                <md-option ng-repeat="type in types" value="{{type}}">{{type}}</md-option>
+              </md-select>
+            </md-input-container>
+          </section>
+          <md-input-container class="md-block">
+            <label>Максимальная оценка</label>
+            <input name="maxgrade" id="maxgrade" type="number" ng-model="newTaskValues.maxgrade" min="0">
+            <div ng-messages="taskForm.maxgrade.$error" ng-show="taskForm.maxgrade.$dirty">
+              <div ng-message="min">
+                Минимальное значение - 0!
+              </div>
+            </div>
+          </md-input-container>
+          <md-input-container class="md-block">
+            <h4 class="h4-input-label"> Описание </h4>
+            <textarea aria-label="task desc" froala="froalaDesc" name="desc" id="taskdesc" ng-model="newTaskValues.desc"></textarea>
+          </md-input-container>
+          <md-list>
+            <md-list-item>
+              <p> Периодическое </p>
+              <md-checkbox class="md-secondary md-primary" ng-model="newTaskValues.periodic"></md-checkbox>
+              <md-tooltip md-direction="top">
+                Выдается периодически
+              </md-tooltip>
+            </md-list-item>
+            <md-list-item>
+              <p> Можно расшарить </p>
+              <md-checkbox class="md-secondary md-primary" ng-model="newTaskValues.shareable"></md-checkbox>
+            </md-list-item>
+            <md-list-item ng-if="newTaskValues.shareable">
+              <p> Нестандартное рекламное сообщение </p>
+              <md-checkbox class="md-secondary md-primary" ng-model="newTaskValues.notStandardAdvertMessage"></md-checkbox>
+            </md-list-item>
+          </md-list>
+          <md-input-container class="md-block" ng-if="newTaskValues.shareable">
+            <label>Заголовок для расшаривания</label>
+            <input required name="shareTitle" id="shareTitle" type="text" ng-model="newTaskValues.shareTitle">
+          </md-input-container>
+          <md-input-container class="md-block" ng-if="newTaskValues.shareable">
+            <label>Краткое описание</label>
+            <textarea name="shortDesc" id="shortDesc" ng-model="newTaskValues.shortDesc"></textarea>
+          </md-input-container>
+          <md-input-container class="md-block" ng-if="newTaskValues.shareable && newTaskValues.notStandardAdvertMessage">
+            <label>Рекламное сообщение</label>
+            <textarea name="advertMessage" id="advertMessage" ng-model="newTaskValues.advertMessage"></textarea>
+          </md-input-container>
+          <section layout="row" layout-align="center center" layout-wrap>
+            <md-button type="submit" id="edit-task-button" class="md-raised md-primary" ng-click="editTask()" aria-label="edittask" ng-disabled="taskForm.$invalid()">
+              Сохранить изменения
+            </md-button>
+          </section>
+        </form>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

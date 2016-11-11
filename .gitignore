@@ -1,0 +1,9 @@
+/shared
+/.vscode
+jsconfig.json
+*.env
+/develop/settings.json
+.idea
+node_modules
+*.log
+/.meteor/dev_bundle

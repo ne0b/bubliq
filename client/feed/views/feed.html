@@ -1,0 +1,43 @@
+
+<div flex layout="row" layout-align="center" layout-wrap>
+  <div class="transparent-frame content-transparent-frame" flex="95">
+    <md-progress-circular ng-if="!feedCtrl.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+    <md-subheader ng-if="feedCtrl.dataReady==='error'" class="md-primary">{{ feedCtrl.dataError }}</md-subheader>
+
+    <div ng-if="feedCtrl.dataReady && feedCtrl.feed.length === 0">
+      <div class="b-empty-profile-text">
+        <div>Лента</div>
+      </div>
+    </div>
+
+    <md-list>
+      <md-virtual-repeat-container class="b-feed-virtual-repeat-container" id="vertical-container">
+        <md-list-item md-virtual-repeat="feed in feedCtrl.infiniteFeed" md-on-demand class="md-2-line answer-list-item">
+          <div ng-if="feed" class="md-list-item-text answer-list-block" ui-sref="tasks.details({ userId: feed.byUserId, taskId: feed.givenTaskId })">
+            <div class="chat-message">
+              <div class="chat-message-body">
+                <answers-avatar answer-user-id="feed.byUser._id"
+                               answer-user-avatar="feed.byUser.profile.avatar"
+                               answer-icon="'content:ic_flag_24px'"></answers-avatar>
+                <div class="chat-message-header">
+                  <strong>
+                    <a class="redirect-link" ui-sref="profileview({userId:feed.byUser._id})">
+                      {{ feed.byUser.profile.name }}
+                    </a>
+                  </strong>
+                  <small>{{ feed.sentTime }}</small>
+                </div>
+
+                <div class="chat-message-text">
+                  <div class="b-feed-text">
+                    Отчет к: "{{ feed.title }}"
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </md-list-item>
+      </md-virtual-repeat-container>
+    </md-list>
+  </div>
+</div>

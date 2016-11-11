@@ -1,0 +1,37 @@
+
+<div flex layout="row" layout-align="center" layout-wrap>
+  <div flex="95" class="transparent-frame content-transparent-frame">
+    <section layout="row" layout-align="center center" layout-wrap>
+      <md-button id="show-own-button" class="md-raised md-primary" ng-click="mentorUsers.showOwn()" aria-label="showown">
+        Показать своих
+      </md-button>
+      <md-button id="show-all-button" class="md-raised md-accent" ng-click="mentorUsers.showAll()" aria-label="showall">
+        Показать всех
+      </md-button>
+    </section>
+
+    <md-progress-circular ng-if="!mentorUsers.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+    <md-subheader ng-if="mentorUsers.dataReady==='error'" class="md-primary">{{ mentorUsers.dataError }}</md-subheader>
+
+    <md-list ng-if="mentorUsers.dataReady">
+      <md-virtual-repeat-container id="vertical-container">
+        <md-list-item md-virtual-repeat="user in mentorUsers.infiniteUsers" md-on-demand class="md-with-secondary secondary-button-padding">
+          <md-button aria-label="user profile link" ui-sref="profileview({userId:user._id})" class="md-no-style">
+            <div class="md-list-item-inner ng-scope">
+              <span ng-if="user.profile.name">
+                {{ user.profile.fullname }}
+              </span>
+              <span class="b-contacts__user-no-name" ng-if="user && !user.profile.name">
+                 Имя не задано
+              </span>
+              <span flex></span>
+              <a class="md-avatar">
+                <img ng-src="{{ user.profile.avatar.url.thumb }}" ng-style="user.profile.avatar.style" />
+              </a>
+            </div>
+          </md-button>
+        </md-list-item>
+      </md-virtual-repeat-container>
+    </md-list>
+  </div>
+</div>

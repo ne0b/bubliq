@@ -1,0 +1,19 @@
+
+<div flex layout="row" layout-align="center" layout-wrap>
+  <div class="transparent-frame content-transparent-frame" flex="95">
+    <md-progress-circular ng-if="!tasksList.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+    <md-subheader ng-if="tasksList.dataReady==='error'" class="md-primary">{{ tasksList.dataError }}</md-subheader>
+
+    <div ng-if="tasksList.dataReady && tasksList.tasks.length === 0">
+      <div class="b-empty-profile-text">
+        <div>
+          В этом разделе ты найдешь свои задания. Как выполнишь - пиши отчет, это важно!
+          Тебе так легче следить за своими успехами, а мы будем знать нужна ли тебе помощь.
+        </div>
+      </div>
+    </div>
+
+    <given-tasks-list ng-if="tasksList.dataReady && tasksList.tasks.length > 0"
+                      given-tasks="tasksList.infiniteTasks"></given-tasks-list>
+  </div>
+</div>

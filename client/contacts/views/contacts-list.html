@@ -1,0 +1,34 @@
+<div flex layout="row" layout-align="center" layout-wrap class="b-contacts">
+  <div flex="95" class="transparent-frame content-transparent-frame b-contacts__main">
+    <md-progress-circular ng-if="!contactsList.dataReady" style="margin-top: 130px;" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+
+    <div ng-if="contactsList.dataReady && !$checkRights()">
+      <div class="b-empty-profile-text">
+        <div>После начала программы ты сможешь видеть в этом разделе профили участников, сможешь познакомиться со всеми ближе.</div>
+      </div>
+    </div>
+
+    <md-list class="b-contacts__list" ng-if="contactsList.dataReady && $checkRights()">
+      <md-virtual-repeat-container class="b-contacts__virtual-repeat" id="vertical-container" md-top-index="contactsList.topIndex">
+        <md-list-item md-virtual-repeat="user in contactsList.infiniteUsers" md-on-demand class="m-padding-left-30">
+          <div ng-if="contactsList.startingLetterCheck($index)" class="user-separator-letter" ng-bind="user.firstLetter"></div>
+          <md-button aria-label="user profile link" ui-sref="profileview({userId:user._id})" class="md-no-style">
+            <div class="md-list-item-inner ng-scope">
+              <span ng-if="user.profile.name">
+                {{ user.profile.fullname }}
+              </span>
+              <span class="b-contacts__user-no-name" ng-if="user && !user.profile.name">
+                 Имя не задано
+              </span>
+              <span flex></span>
+              <a class="md-avatar">
+                <img ng-src="{{ user.profile.avatar.url.thumb }}" ng-style="user.profile.avatar.style" />
+              </a>
+            </div>
+          </md-button>
+          <md-divider ng-if="contactsList.lineCheck($index)"></md-divider>
+        </md-list-item>
+      </md-virtual-repeat-container>
+    </md-list>
+  </div>
+</div>

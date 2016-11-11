@@ -1,0 +1,29 @@
+<div ng-on-scroll-down="streamWall.moreTasks()" class="b-scroll-down-wrapper">
+  <md-progress-circular ng-if="!streamWall.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+  <md-subheader ng-if="streamWall.dataReady==='error'" class="md-primary">{{ streamWall.dataError }}</md-subheader>
+
+  <div ng-if="streamWall.dataReady && streamWall.tasks.length === 0" class="transparent-frame content-transparent-frame">
+    <div class="b-empty-profile-text">
+      <div>Тут будут видны все задания и отчеты, как твои, так и твоих партнеров по игре.</div>
+    </div>
+  </div>
+
+  <div ng-if="streamWall.dataReady && streamWall.tasks.length > 0" id="taskwall">
+    <md-card class="transparent-frame card-transparent-frame first-no-margin-top" ng-repeat="task in streamWall.tasks">
+      <md-card-header>
+        <md-card-header-text>
+          <span class="md-title">{{ task.title }}</span>
+          <span class="md-subhead">{{ task.starttime }}</span>
+        </md-card-header-text>
+      </md-card-header>
+      <md-card-content ng-class="{showmore: streamWall.showmore[task._id], showless: !streamWall.showmore[task._id]}" class="streamwall-task-desc" ng-click="streamWall.showMore(task._id)">
+        <div class="fr-view fr-view--space" ng-bind-html="task.desc"></div>
+        <div class="b-task-blur-bottom"></div>
+      </md-card-content>
+      <md-card-actions layout="row" layout-align="start center">
+        <a class="b-show-reports-link" ui-sref="taskwall({streamId:streamWall.streamId, taskId:task._id})">ОТЧЕТЫ</a>
+      </md-card-actions>
+    </md-card>
+    <md-progress-circular ng-if="streamWall.isLoading" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+  </div>
+</div>

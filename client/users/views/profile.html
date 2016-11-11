@@ -1,0 +1,197 @@
+<md-progress-circular ng-if="!profileEdit.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+<md-subheader ng-if="profileEdit.dataReady==='error'" class="md-primary">{{ profileEdit.dataError }}</md-subheader>
+
+<div ng-if="profileEdit.dataReady" flex layout="row" layout-align="center" layout-wrap>
+  <div class="transparent-frame content-transparent-frame" flex-lg="60" flex-gt-lg="45" flex-md="85" flex-sm="100">
+    <div ng-if="$root.currentUser && $root.currentUser.emails[0]['verified']" class="m-position-relative">
+      <div layout="row" layout-wrap style="min-height:250px;position:relative;">
+        <md-button ng-if="profileEdit.user.profile.avatar" ng-click="profileEdit.avatarEditable()" type="button" style="position: absolute;top: 5px;left: 5px;" class="md-fab md-mini md-warn" aria-label="avatar edit">
+          <md-icon md-svg-icon="editor:ic_mode_edit_24px" class="menu-icon menu-icon--white"></md-icon>
+        </md-button>
+        <div style="width:250px;" layout="column" ng-if="profileEdit.user.profile.avatar && !profileEdit.avatarEdit">
+          <md-card>
+            <img ng-src="{{ profileEdit.user.profile.avatar.url.cropped }}" ng-style="profileEdit.user.profile.avatar.style" class="md-card-image">
+          </md-card>
+        </div>
+        <div ng-if="!profileEdit.user.profile.avatar || profileEdit.avatarEdit" ngf-drop ngf-select ng-hide="profileEdit.cropImgSrc"
+             ngf-change="profileEdit.addProfileImage($files)"
+             ngf-drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}" class="drop-box well well-lg"
+             ngf-multiple="true" ngf-allow-dir="false" ngf-accept="'image/*'"
+             ngf-drop-available="dropAvailable" ngf-hide-on-drop-not-available="true">
+          <div>Нажмите сюда, чтобы выбрать фото</div>
+          <div>
+            <strong>Или</strong>
+          </div>
+          <div ng-if="dropAvailable">Вы можете перенести фото сюда</div>
+        </div>
+        <div ng-if="profileEdit.cropImgSrc" class="ng-crop-container">
+          <img-crop image="profileEdit.cropImgSrc" result-image="profileEdit.myCroppedImage" area-type="square" result-image-size="512"></img-crop>
+          <md-button style="display: block;margin: 5px auto;" ng-click="profileEdit.setProfileAvatar()" ng-disabled="!profileEdit.cropImgSrc" class="md-primary">
+            Сохранить
+          </md-button>
+        </div>
+      </div>
+      <form name="profileForm" class="b-profile-form">
+        <md-input-container class="md-block">
+          <label>Имя</label>
+          <input name="name" id="profilename" type="text" ng-model="profileEdit.userProfile.name">
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Фамилия</label>
+          <input name="lastname" id="profilelastname" type="text" ng-model="profileEdit.userProfile.lastname">
+        </md-input-container>
+        <h4 style="margin-top: 6px;margin-bottom: 0;color: rgba(0,0,0,0.54);font-size: 12px;font-weight: normal;margin-left: 5px;">
+          Дата рождения
+        </h4>
+        <div flex layout="row" layout-wrap>
+          <md-input-container flex="33" class="md-block" style="max-width: 65px;">
+            <label>День</label>
+            <input name="birthday" id="profilebirthday" type="number" ng-model="profileEdit.userProfile.birthday">
+            <md-tooltip md-direction="left">
+              Формат ДД
+            </md-tooltip>
+          </md-input-container>
+          <md-input-container flex="33" class="md-block" style="max-width: 80px;">
+            <label>Месяц</label>
+            <input name="birthmonth" id="profilebirthmonth" type="number" ng-model="profileEdit.userProfile.birthmonth">
+            <md-tooltip md-direction="left">
+              Формат ММ
+            </md-tooltip>
+          </md-input-container>
+          <md-input-container flex="33" class="md-block" style="max-width: 80px;">
+            <label>Год</label>
+            <input name="birthyear" id="profilebirthyear" type="number" ng-model="profileEdit.userProfile.birthyear">
+            <md-tooltip md-direction="left">
+              Формат ГГГГ
+            </md-tooltip>
+          </md-input-container>
+        </div>
+        <md-input-container class="md-block">
+          <label>Страна</label>
+          <input name="country" id="profilecountry" type="text" ng-model="profileEdit.userProfile.country">
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Город</label>
+          <input name="city" id="profilecity" type="text" ng-model="profileEdit.userProfile.town">
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>О себе</label>
+          <textarea name="about" id="profileabout" type="text" ng-model="profileEdit.userProfile.about"></textarea>
+        </md-input-container>
+
+        <h4 style="margin-top: 15px;margin-bottom: 0px;"> Список желаний </h4>
+        <md-input-container ng-repeat="wish in profileEdit.userProfile.wishlist track by $index" class="md-block">
+          <label>Желание</label>
+          <input name="wish" type="text" ng-model="profileEdit.userProfile.wishlist[$index]" minlength="2">
+          <div ng-messages="profileEdit.profileForm.wish.$error" ng-show="profileEdit.profileForm.wish.$dirty">
+            <div ng-message="minlength">
+              Минимальная длина 2 символа!
+            </div>
+          </div>
+          <md-button ng-click="profileEdit.removeWish($index)" type="button" class="md-fab md-mini md-warn m-right" aria-label="remove wish">
+            <md-icon md-svg-icon="content:ic_clear_24px" class="menu-icon menu-icon--white"></md-icon>
+          </md-button>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Новое желание</label>
+          <input name="wish" type="text" ng-model="profileEdit.newWish" minlength="2" ng-keyup="profileEdit.addWishOnEnter($event)">
+          <div ng-messages="profileEdit.profileForm.wish.$error" ng-show="profileEdit.profileForm.wish.$dirty">
+            <div ng-message="minlength">
+              Минимальная длина 2 символа!
+            </div>
+          </div>
+          <md-button ng-click="profileEdit.addWish()" type="button" class="md-fab md-mini m-right" aria-label="add wish">
+            <md-icon md-svg-icon="content:ic_add_24px" class="menu-icon menu-icon--white"></md-icon>
+          </md-button>
+        </md-input-container>
+
+        <h4 style="margin-top: 15px;margin-bottom: 0px;"> Я в соцсетях </h4>
+        <md-input-container ng-repeat="socialLink in profileEdit.userProfile.socialLinks track by $index" class="md-block">
+          <label>Ссылка</label>
+          <input name="sociallink" type="text" ng-model="profileEdit.userProfile.socialLinks[$index]" minlength="2">
+          <div ng-messages="profileEdit.profileForm.sociallink.$error" ng-show="profileEdit.profileForm.sociallink.$dirty">
+            <div ng-message="minlength">
+              Минимальная длина 2 символа!
+            </div>
+          </div>
+          <md-button ng-click="profileEdit.removeSocialLink($index)" type="button" class="md-fab md-mini md-warn m-right" aria-label="remove social link">
+            <md-icon md-svg-icon="content:ic_clear_24px" class="menu-icon menu-icon--white"></md-icon>
+          </md-button>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Новая ссылка</label>
+          <input name="sociallink" type="text" ng-model="profileEdit.newSocialLink" minlength="2" ng-keyup="profileEdit.addSocialLinkOnEnter($event)">
+          <div ng-messages="profileEdit.profileForm.sociallink.$error" ng-show="profileEdit.profileForm.sociallink.$dirty">
+            <div ng-message="minlength">
+              Минимальная длина 2 символа!
+            </div>
+          </div>
+          <md-button ng-click="profileEdit.addSocialLink()" type="button" class="md-fab md-mini m-right" aria-label="add social link">
+            <md-icon md-svg-icon="content:ic_add_24px" class="menu-icon menu-icon--white"></md-icon>
+          </md-button>
+        </md-input-container>
+
+        <h4 style="margin-bottom: 0px;"> Настройки уведомлений </h4>
+        <md-list>
+          <md-list-item>
+            <p style="padding-right: 20px;"> Рассылка уведомлений о новых заданиях на email </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="profileEdit.userProfile.tasksnotify"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p style="padding-right: 20px;"> Push-уведомления о новых заданиях </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="profileEdit.userProfile.pushTasksNotify"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p style="padding-right: 20px;"> Push-уведомления о новых комментариях </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="profileEdit.userProfile.pushCommentsNotify"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p style="padding-right: 20px;"> Push-уведомления о новых лайках </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="profileEdit.userProfile.pushLikesNotify"></md-checkbox>
+          </md-list-item>
+        </md-list>
+        <section layout="column" layout-align="center center" layout-wrap style="margin-top: 20px;">
+          <md-button id="save-profile-button" type="button" class="md-raised md-primary" ng-click="profileEdit.updateProfile()" aria-label="saveprofile" ng-disabled="profileEdit.profileForm.$invalid()">
+            Сохранить
+          </md-button>
+        </section>
+      </form>
+    </div>
+    <div class="b-email-verification" ng-if="$root.currentUser && !$root.currentUser.emails[0]['verified']">
+      <div class="b-email-verification--text">
+        <div class="b-logout-icon" ng-click="$logout()">
+          <md-icon class="menu-icon menu-icon--black" md-svg-icon="action:ic_exit_to_app_24px"></md-icon>
+        </div>
+
+        <div>
+          Привет и добро пожаловать на портал Космического бублика
+        </div>
+
+        <div style="margin-top:20px;">
+          Пройдите пожалуйста активацию.
+        </div>
+        <div>
+          Для этого нужно пройти по ссылке которую мы отправили вам на почту.
+        </div>
+
+        <div style="margin-top:20px;">
+          <strong>ВАЖНО!</strong> Если вам НЕ ПРИДЕТ письмо от нас через несколько секунд, пожалуйста, проверьте не попало ли оно в папку <strong>СПАМ</strong> (такая папка есть в каждом email-сервисе недалеко от папки <strong>"Входящие"</strong>)... особенно часто это случается с теми, кто использует почту на gmail (это иногда происходит по ошибке email-служб)
+        </div>
+        <div>
+          Если вы НАЙДЕТЕ его в папке "СПАМ", <strong>обязательно отметьте его как "не спам"</strong>, чтобы получать задания наших программ без проблем.
+        </div>
+
+        <div style="margin-top:20px;">
+          Если письмо так нигде и не нашлось, нажмите эту кнопку.
+        </div>
+        <md-button class="md-raised md-primary b-primary-button b-primary-button-send-one-more-time" ng-click="profileEdit.sendverificationemail()" ng-if="$root.currentUser && !$root.currentUser.emails[0]['verified']" aria-label="sendverificationemail">
+          ОТПРАВИТЬ ПОВТОРНО
+        </md-button>
+
+        <div style="margin-top:20px;">
+          Если же все равно ничего не получается, это может значить, что ваш почтовый сервис или почтовый клиент блокирует наше письмо. В этом случае пишите нам на адрес <a href="mailto:info@spacebagel.com">info@spacebagel.com</a> и мы решим эту задачку.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

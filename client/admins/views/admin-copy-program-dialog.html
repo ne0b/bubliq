@@ -1,0 +1,15 @@
+<md-dialog aria-label="userEdit" ng-cloak>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      Вы действительно хотите копировать эту программу?
+      <section layout="row" layout-align="center center" layout-wrap>
+        <md-button type="submit" id="edit-user-button" class="md-raised md-primary" ng-click="copyProgram.copyProgram()" aria-label="edit user">
+          КОПИРОВАТЬ
+        </md-button>
+        <md-button id="delete-user-button" class="md-raised md-warn" ng-click="hide()" aria-label="delete user">
+          НЕ КОПИРОВАТЬ
+        </md-button>
+      </section>
+    </div>
+  </md-dialog-content>
+</md-dialog>

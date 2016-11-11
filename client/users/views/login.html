@@ -1,0 +1,44 @@
+<script>fbq('track', 'ViewContent');</script>
+<div flex layout="row" layout-align="center" layout-wrap>
+  <div flex-lg="35" flex-gt-lg="25" flex-md="35" flex-sm="90">
+    <div>
+      <form name="loginForm" class="m-margin-top-65" ng-if="!$root.currentUser" ng-hide="$root.currentUser">
+        <md-input-container class="b-rounded-input-container">
+          <label>Email</label>
+          <input required name="email" id="email" type="email" ng-model="loginCtrl.credentials.email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" oninvalid="this.setCustomValidity('Заполните это поле.')" oninput="setCustomValidity('')">
+          <div ng-messages="loginForm.email.$error" class="m-text-align-center" ng-show="loginForm.email.$dirty" multiple>
+            <div ng-message="required">
+              Это обязательное поле!
+            </div>
+            <div ng-message="pattern">
+              Введите правильный email!
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container class="b-rounded-input-container">
+          <label>Пароль</label>
+          <input required name="password" id="password" type="password" ng-model="loginCtrl.credentials.password" minlength="6" oninvalid="this.setCustomValidity('Заполните это поле.')" oninput="setCustomValidity('')">
+          <div ng-messages="loginForm.password.$error" class="m-text-align-center" ng-show="loginForm.password.$dirty" multiple>
+            <div ng-message="required">
+              Это обязательное поле!
+            </div>
+            <div ng-message="minlength">
+              Минимальная длина 6 символов!
+            </div>
+          </div>
+        </md-input-container>
+        <div style="color: red;">
+          {{ loginCtrl.error }}
+        </div>
+        <section layout="row" layout-align="center center" layout-wrap>
+          <md-button id="login-button" class="md-raised md-primary b-primary-button" ng-click="loginCtrl.login()" aria-label="login" ng-disabled="loginCtrl.loginForm.$invalid()">
+            Войти или зарегистрироваться
+          </md-button>
+          <md-button class="md-raised md-primary b-primary-button b-transparent-background m-margin-top-20" ng-click="loginCtrl.sendresetpasswordemail(loginForm)">
+            Забыли пароль?
+          </md-button>
+        </section>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+
+<div flex layout="row" layout-align="center" layout-wrap>
+  <div flex="95" class="transparent-frame content-transparent-frame">
+    <md-progress-circular ng-if="!mentorReview.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+    <md-subheader ng-if="mentorReview.dataReady==='error'" class="md-primary">{{ mentorReview.dataError }}</md-subheader>
+
+    <div ng-if="mentorReview.dataReady" class="m-margin-top-20">
+      <a ui-sref="mentor.users">Проверка заданий</a> -
+      <user-id user="mentorReview.users[0]"></user-id> -
+      Список заданий
+    </div>
+
+    <md-list ng-if="mentorReview.dataReady">
+      <md-list-item ng-repeat="task in mentorReview.tasks | orderBy:['-createdAt','_id']" class="md-with-secondary secondary-button-padding">
+        <md-button aria-label="task info" ui-sref="tasks.details({userId:task.userId, taskId:task._id})" class="md-no-style">
+          <div class="md-list-item-inner m-padding-left-30 ng-scope">
+            <md-icon ng-if="task.task.required" class="menu-icon menu-icon--in-task menu-icon--red" md-svg-icon="alert:ic_error_24px" >
+              <md-tooltip md-direction="bottom">
+                Обязательное
+              </md-tooltip>
+            </md-icon>
+            <md-icon ng-if="!task.task.required" class="menu-icon menu-icon--in-task  menu-icon--green" md-svg-icon="alert:ic_error_24px">
+              <md-tooltip md-direction="bottom">
+                Необязательное
+              </md-tooltip>
+            </md-icon>
+            {{ task.task.title }}
+          </div>
+          <div class="md-secondary task-list-sub-info">
+            <md-icon class="menu-icon" md-svg-icon="{{ task.statusIcon.icon }}" style="color: {{ task.statusIcon.color }} !important;">
+              <md-tooltip md-direction="top">
+                {{ task.statusIcon.status }}
+              </md-tooltip>
+            </md-icon>
+            <span>
+              {{ mentorReview.starttime(task.stream.start, task.task.start) }}
+              <md-tooltip md-direction="top">
+                Дата выдачи
+              </md-tooltip>
+            </span> ➞
+            <span>
+              {{ mentorReview.endtime(task.stream.start, task.task.end) }}
+              <md-tooltip md-direction="top">
+                Сделать до
+              </md-tooltip>
+            </span>
+          </div>
+        </md-button>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>

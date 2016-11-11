@@ -1,0 +1,170 @@
+@import './variables.less';
+
+.chat-message{
+  outline:none;
+
+  .chat-message-body {
+    .b-tasks-comment-edit-form {
+      cursor:default;
+    }
+  }
+}
+
+@media only screen and (max-width: 599px) and (min-width: 0) {
+  .b-task-end-time{
+    align-self: flex-end;
+  }
+
+  .transparent-frame.flex-sm-100 {
+    max-width:100%;
+  }
+}
+
+.b-tasks__virtual-repeat {
+  height: calc(~"100vh - 84px") !important;
+}
+
+.b-task-details-send-button{
+  z-index: 4 !important;
+  position: absolute;
+  bottom: -33px;
+  right: 60px;
+
+  &.b-task-details-send-button--report {
+    bottom: -25px;
+  }
+}
+.taskwall-report-message.showless {
+  .b-task-blur-bottom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: -moz-linear-gradient(top,  @transparentWhite 0%, @transparentKindaWhite 50%, @grayishWhite 100%);
+    background: -webkit-linear-gradient(top,  @transparentWhite 0%, @transparentKindaWhite 50%, @grayishWhite 100%);
+    background: linear-gradient(to bottom,  @transparentWhite 0%, @transparentKindaWhite 50%, @grayishWhite 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#f7f7f9',GradientType=0 );
+  }
+}
+
+task-likes{
+  min-height: 40px;
+  display: block;
+  overflow: hidden;
+}
+
+.task-custom-header{
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  margin: 0 0px 0px 8px;
+  line-height: 1.6em;
+  color: rgba(0,0,0,0.54);
+  padding-top: 15px;
+}
+
+.b-tasks-like-icon {
+  width:18px;
+  height:18px;
+}
+
+.b-tasks-do-until-text {
+  font-style: italic;
+  position: absolute;
+  right: 90px;
+  top: 6px;
+  font-size: 14px;
+}
+
+task-status{
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  display: block;
+  width: 24px;
+  height: 40px;
+}
+
+.b-tasks-list-item {
+  padding-left: 20px;
+  width: calc(~"100% - 155px");
+  height: 48px;
+  line-height: 48px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block !important;
+}
+
+.given-tasks-list-show-grade {
+  display:block;
+  position: absolute;
+  right: 5px;
+  top: 6px;
+}
+
+.given-tasks-list-show-grade-bu {
+  display:block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.b-task-end-time {
+  position: relative !important;
+  min-width: 100px !important;
+  min-height: 24px !important;
+  top: 26px !important;
+  align-self: center;
+  height: 30px;
+
+  div {
+    float: left;
+  }
+}
+
+.b-task-grade-block {
+  padding: 0px 10px;
+  width: 57px;
+  overflow: hidden;
+  background: white;
+  -webkit-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 1);
+  -moz-box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 1);
+  box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 1);
+
+  .b-task-grade-block__background {
+    background: @transparentGreen;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .b-task-grade-block__value {
+    text-align: center;
+    color: black;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.b-task-grade-separator {
+  margin: 0 10px;
+  height: 24px;
+  line-height: 26px;
+}
+
+given-tasks-list {
+  display: block;
+  margin: 0px -20px;
+}
+
+.b-self-like-button {
+  cursor: default;
+}
+
+.b-old-report {
+  color: #777 !important;
+}

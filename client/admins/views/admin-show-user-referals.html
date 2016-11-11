@@ -1,0 +1,29 @@
+<md-dialog aria-label="userEdit" ng-cloak>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+
+      <div class="b-referal-header">
+        Все рефералы {{ user.emails[0].address }}:
+      </div>
+
+      <md-button class="b-referal-close-dialog-button md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-src="navigation:ic_close_24px" aria-label="Close dialog"></md-icon>
+      </md-button>
+
+      <table class="b-referal-table">
+        <tr class="b-referal-table__tr" ng-repeat="referal in userReferals.referals">
+          <td class="b-referal-table__avatar-td">
+            <a target="_blank" ui-sref="profileview({userId:referal._id})">
+              <img ng-src="{{ referal.avatar.url.thumb }}" ng-style="referal.avatar.style" />
+            </a>
+          </td>
+          <td class="b-referal-table__td">{{ referal.fullname }}</td>
+          <td class="b-referal-table__td">{{ referal.paymentDate }}</td>
+          <td class="b-referal-table__td">{{ referal.paymentSum }}</td>
+        </tr>
+      </table>
+
+      <md-progress-circular ng-if="!userReferals.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+    </div>
+  </md-dialog-content>
+</md-dialog>

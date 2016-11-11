@@ -1,0 +1,15 @@
+<md-dialog aria-label="deleteStream" ng-cloak>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      Вы действительно хотите удалить этот поток?
+      <section layout="row" layout-align="center center" layout-wrap>
+        <md-button type="submit" class="md-raised md-primary" ng-click="deleteStream.deleteStream()" aria-label="delete stream">
+          УДАЛИТЬ
+        </md-button>
+        <md-button class="md-raised md-warn" ng-click="hide()" aria-label="not delete stream">
+          НЕ УДАЛЯТЬ
+        </md-button>
+      </section>
+    </div>
+  </md-dialog-content>
+</md-dialog>

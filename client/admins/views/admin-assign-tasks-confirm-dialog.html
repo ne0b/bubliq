@@ -1,0 +1,15 @@
+<md-dialog aria-label="user tasks assign" ng-cloak>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      Вы действительно хотите выдать задания пользователю {{ user.emails[0].address }} для текущей программы?
+      <section layout="row" layout-align="center center" layout-wrap>
+        <md-button type="submit" id="assign-tasks-button" class="md-raised md-primary" ng-click="assignTasks()" aria-label="assign button">
+          ВЫДАТЬ
+        </md-button>
+        <md-button id="not-assign-tasks-button" class="md-raised md-warn" ng-click="hide()" aria-label="not assign button">
+          НЕ ВЫДАВАТЬ
+        </md-button>
+      </section>
+    </div>
+  </md-dialog-content>
+</md-dialog>

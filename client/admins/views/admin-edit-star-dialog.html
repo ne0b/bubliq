@@ -1,0 +1,46 @@
+<md-dialog aria-label="starEdit"  ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2> Звездочка {{ star.title }} </h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-icon="content:ic_clear_24px" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <form>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <form name="starForm">
+          <md-input-container class="md-block">
+            <label>Название</label>
+            <input required name="title" id="startitle" type="text" minlength="6" ng-model="star.title">
+            <div ng-messages="starForm.title.$error" ng-show="starForm.title.$dirty">
+              <div ng-message="required">
+                Это обязательное поле!
+              </div>
+              <div ng-message="minlength">
+                Минимальная длина 6 символов!
+              </div>
+            </div>
+          </md-input-container>
+
+          <h4>Капитан</h4>
+          <md-autocomplete md-selected-item="star.captain" md-search-text="searchCT" md-items="captain in searchCap(searchCT)" md-item-text="captain.fullname">
+            <span md-highlight-text="searchCT" ng-class="{ 'captain-assigned': assignedCaptains.indexOf(captain) !== -1 }">
+              {{ captain.fullname }}
+            </span>
+          </md-autocomplete>
+
+          <h4 style="color:red;">Для показа всех капитанов введите символ "+" в поле поиска.</h4>
+
+          <section layout="row" layout-align="center center" layout-wrap>
+            <md-button type="submit" id="edit-star-button" class="md-raised md-primary" ng-click="editStar()" aria-label="editstar" ng-disabled="starForm.$invalid()">
+              Сохранить изменения
+            </md-button>
+          </section>
+        </form>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

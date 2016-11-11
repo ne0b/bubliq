@@ -1,0 +1,146 @@
+.b-payment {
+
+  .b-payment__header {
+    text-align: center;
+    color: white;
+  }
+
+  .b-payment__submit {
+    background-color: #ffcc01;
+    box-shadow: 0 4px 0 0 #bb970c;
+    color: #8c641e;
+    position: relative;
+    z-index: 8;
+    padding: 12px 26px;
+    font-size: 1.6rem;
+    line-height: 1.4em;
+    font-weight: 400;
+    border: 0;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 0;
+    text-align: center;
+    &:hover{
+      background-color: #d8ad00;
+      box-shadow: 0 4px 0 0 #8d7309;
+      color: #79581f;
+    }
+
+    display: block;
+    margin: 10px auto;
+    outline: none;
+  }
+
+  .b-payment__email {
+    padding: 8px 12px 8px 20px !important;
+    border-style: none;
+    border-radius: 25px;
+    color: #d7d9e0;
+    height: 21px;
+    line-height: 21px;
+    background-color: rgba(255, 255, 255, 0.239216);
+    margin: auto;
+    display: block;
+    width: 250px;
+    outline:none;
+  }
+
+  .b-payment__subtext{
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+    font-size: 14px;
+  }
+}
+
+
+
+@media only screen and (min-width: 0) and (max-width: 599px)  {
+  .b-payment {
+    .b-payment__submit {
+      font-size: 1.0rem;
+      padding: 6px 14px;
+    }
+
+    .b-payment__info {
+      height: calc(~"100vh - 120px");
+      overflow: auto;
+
+      &.b-payment__info--trial {
+        height: calc(~"100vh - 170px");
+      }
+
+      &.b-payment__info--rules {
+        height: calc(~"100vh - 290px");
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 959px) {
+  .b-payment {
+    .b-payment__submit {
+      font-size: 1.2rem;
+      padding: 8px 18px;
+    }
+
+    .b-payment__info {
+      height: calc(~"100vh - 125px");
+      overflow: auto;
+
+      &.b-payment__info--trial {
+        height: calc(~"100vh - 185px");
+      }
+
+      &.b-payment__info--rules {
+        height: calc(~"100vh - 265px");
+      }
+    }
+
+
+  }
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1279px) {
+  .b-payment {
+    .b-payment__submit {
+      font-size: 1.4rem;
+      padding: 10px 22px;
+    }
+
+    .b-payment__info {
+      height: calc(~"100vh - 135px");
+      overflow: auto;
+
+      &.b-payment__info--trial {
+        height: calc(~"100vh - 210px");
+      }
+
+      &.b-payment__info--rules {
+        height: calc(~"100vh - 275px");
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .b-payment {
+    .b-payment__submit {
+      font-size: 1.6rem;
+      padding: 12px 26px;
+    }
+
+    .b-payment__info {
+      height: calc(~"100vh - 145px");
+      overflow: auto;
+
+      &.b-payment__info--trial {
+        height: calc(~"100vh - 225px");
+      }
+
+      &.b-payment__info--rules {
+        height: calc(~"100vh - 285px");
+      }
+    }
+  }
+}

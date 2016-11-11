@@ -1,0 +1,132 @@
+
+<div flex layout="row" layout-align="center" layout-wrap>
+  <div flex="95" class="transparent-frame content-transparent-frame">
+    <md-tabs md-selected="adminPrograms.selectedIndex" md-dynamic-height md-border-bottom>
+      <md-tab id="programm-list">
+        <md-tab-label>Список программ</md-tab-label>
+        <md-tab-body>
+          <div style="min-height: 44vh;">
+            <md-progress-circular ng-if="!adminPrograms.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+            <md-subheader ng-if="adminPrograms.dataReady==='error'" class="md-primary">{{ adminPrograms.dataError }}</md-subheader>
+            <md-list ng-if="adminPrograms.dataReady">
+              <md-list-item ng-repeat="program in adminPrograms.programs" class="md-with-secondary secondary-button-padding md-clickable">
+                <md-button ui-sref="admintasks({programId:program._id})" class="md-no-style">
+                  <div class="md-list-item-inner ng-scope">
+                    <p> {{ program.title }} </p>
+                  </div>
+                </md-button>
+                <md-button style="right: 110px;" class="md-secondary md-accent margin-reset" ng-click="adminPrograms.copyProgram(program._id)">Копировать</md-button>
+                <md-button class="md-secondary md-warn margin-reset" ng-click="adminPrograms.deleteProgram(program._id)">Удалить</md-button>
+              </md-list-item>
+            </md-list>
+            <div id="saved-toast-bounds" class="saved-toast-bounds saved-toast-bounds--bottom"></div>
+          </div>
+        </md-tab-body>
+      </md-tab>
+      <md-tab id="new-program">
+        <md-tab-label>Новая программа</md-tab-label>
+        <md-tab-body>
+          <div layout-padding>
+            <form name="programForm">
+              <section layout="row" layout-align="center center" layout-wrap>
+                <md-button id="add-program-button" class="md-raised md-primary" ng-click="adminPrograms.addProgram()" aria-label="addprogram" ng-disabled="adminPrograms.programForm.$invalid()">
+                  Добавить программу
+                </md-button>
+              </section>
+              <md-input-container class="md-block">
+                <label>Название</label>
+                <input required name="title" id="title" type="text" minlength="6" ng-model="adminPrograms.newProgram.title">
+                <div ng-messages="programForm.title.$error" ng-show="programForm.title.$dirty">
+                  <div ng-message="required">
+                    Это обязательное поле!
+                  </div>
+                  <div ng-message="minlength">
+                    Минимальная длина 6 символов!
+                  </div>
+                </div>
+              </md-input-container>
+              <md-input-container class="md-block">
+                <h4 class="h4-input-label"> Описание </h4>
+                <textarea aria-label="new program desc" froala="adminPrograms.froalaDesc" name="desc" id="desc" ng-model="adminPrograms.newProgram.desc"></textarea>
+              </md-input-container>
+              <md-input-container class="md-block">
+                <h4 class="margin-reset h4-input-label h4-input-label--bottom"> Цели </h4>
+                <textarea aria-label="new program goals" froala="adminPrograms.froalaGoals" name="goals" id="goals" ng-model="adminPrograms.newProgram.goals"></textarea>
+              </md-input-container>
+              <md-list>
+                <md-list-item>
+                  <p> Бесплатная </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="adminPrograms.newProgram.free"></md-checkbox>
+                </md-list-item>
+              </md-list>
+            </form>
+            <md-divider></md-divider>
+            <h4 ng-if="adminPrograms.newProgram.tasks.length > 0">Задания в программе</h4>
+            <md-list ng-if="adminPrograms.newProgram.tasks.length > 0">
+              <md-list-item ng-repeat="task in adminPrograms.newProgram.tasks | orderBy:adminPrograms.taskOrder" class="md-with-secondary secondary-button-padding">
+                <md-button ng-click="adminPrograms.showEditTask($event, task)" class="md-no-style">
+                  <div class="md-list-item-inner ng-scope">
+                    <p> {{ task.title }} </p>
+                  </div>
+                </md-button>
+                <div class="md-secondary">
+                  <md-button class="margin-reset" ng-click="adminPrograms.sortByType()">
+                    <md-tooltip md-direction="bottom">
+                      Тип задания
+                    </md-tooltip>
+                    {{ task.type }}
+                  </md-button>
+                  <md-button class="md-primary margin-reset" ng-click="adminPrograms.sortByStart()" >
+                    <md-tooltip md-direction="bottom">
+                      День старта
+                    </md-tooltip>
+                    {{ task.start }}
+                  </md-button>
+                  <md-button class="md-accent margin-reset" ng-click="adminPrograms.sortByDuration()" >
+                    <md-tooltip md-direction="bottom">
+                      Продолжительность
+                    </md-tooltip>
+                    {{ task.duration }}
+                  </md-button>
+                  <md-button class="md-warn margin-reset" ng-click="adminPrograms.sortByEnd()" >
+                    <md-tooltip md-direction="bottom">
+                      День завершения
+                    </md-tooltip>
+                    {{ task.end }}
+                  </md-button>
+                  <md-button class="md-warn margin-reset" ng-click="adminPrograms.deleteTask(task)" >Удалить</md-button>
+                </div>
+              </md-list-item>
+            </md-list>
+            <md-divider></md-divider>
+            <section layout="row" layout-align="center center" layout-wrap>
+              <md-button id="add-task-button" class="md-raised md-primary" ng-click="adminPrograms.showEditTask($event, false)" aria-label="addtask">
+                Добавить задание в программу
+              </md-button>
+            </section>
+            <md-divider></md-divider>
+            <h4 ng-if="adminPrograms.newProgram.streams.length > 0">Потоки в программе</h4>
+            <md-list ng-if="adminPrograms.newProgram.streams.length > 0">
+              <md-list-item ng-repeat="stream in adminPrograms.newProgram.streams" class="md-with-secondary secondary-button-padding">
+                <md-button ng-click="adminPrograms.showEditStream($event, stream)" class="md-no-style">
+                  <div class="md-list-item-inner ng-scope">
+                    <p> {{ stream.title }} </p>
+                  </div>
+                </md-button>
+                <div class="md-secondary">
+                  <md-button class="md-warn margin-reset" ng-click="adminPrograms.deleteStream(stream)" >Удалить</md-button>
+                </div>
+              </md-list-item>
+            </md-list>
+            <md-divider></md-divider>
+            <section layout="row" layout-align="center center" layout-wrap>
+              <md-button id="add-stream-button" class="md-raised md-primary" ng-click="adminPrograms.showEditStream($event, false)" aria-label="add stream">
+                Добавить поток в программу
+              </md-button>
+            </section>
+          </div>
+        </md-tab-body>
+      </md-tab>
+    </md-tabs>
+  </div>
+</div>

@@ -1,0 +1,135 @@
+<md-dialog class="b-dialog" aria-label="userEdit" ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-icon="content:ic_clear_24px" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <form name="userForm">
+        <md-tabs md-stretch-tabs="always" md-dynamic-height>
+          <md-tab label="Задать права">
+            <md-tab-body>
+              <md-input-container>
+                <label>Роль</label>
+                <md-select ng-model="newUserValues.role" ng-change="changePermissions()">
+                  <md-option ng-repeat="rolepreset in rolespresets" value="{{rolepreset._id}}">{{rolepreset.title}}</md-option>
+                </md-select>
+              </md-input-container>
+              <md-list>
+                <md-list-item>
+                  <p> Может управлять пользователями </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.usersmanage"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может назначать наставников и программы </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.mentorassign"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может управлять программами </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.programsmanage"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может удалять чужие сообщения и комментарии </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.moderator"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может просматривать всех пользователей </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.usersviewall"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может просматривать своих пользователей </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.usersviewown"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может просматривать все программы </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.programsviewall"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может просматривать бесплатные программы </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.programsviewfree"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может проверять задания </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.tasksreview"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может назначать задания </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.tasksassign"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может выбирать из всех программ </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.programstakeall"></md-checkbox>
+                </md-list-item>
+                <md-list-item>
+                  <p> Может выбирать из бесплатных программ </p>
+                  <md-checkbox class="md-secondary md-primary" ng-model="newUserValues.rights.programstakefree"></md-checkbox>
+                </md-list-item>
+              </md-list>
+            </md-tab-body>
+          </md-tab>
+          <md-tab label="Назначить программу">
+            <md-tab-body>
+              <h2 class="md-title">Выбранные программы:</h2>
+              <md-list>
+                <md-list-item ng-repeat="program in selectedPrograms" class="md-clickable">
+                  <md-button ng-click="removeFromArray(program, $index)" class="program-button md-no-style">
+                    <div class="md-list-item-inner ng-scope">
+                      <p> {{ program.title }} </p>
+                    </div>
+                  </md-button>
+                  <md-input-container>
+                    <label>Поток</label>
+                    <md-select required ng-model="selectedStreams[$index]">
+                      <md-option ng-repeat="stream in programStreams(program)" value="{{stream._id}}">{{stream.title}}</md-option>
+                    </md-select>
+                  </md-input-container>
+                  <md-input-container>
+                    <label>Звездочка</label>
+                    <md-select required ng-model="selectedStars[$index]">
+                      <md-option ng-repeat="star in streamStars(selectedStreams[$index])" value="{{star._id}}">{{star.title}}</md-option>
+                    </md-select>
+                  </md-input-container>
+                </md-list-item>
+                <md-list-item ng-if="selectedPrograms.length == 0">
+                  <div class="md-list-item-inner ng-scope">
+                    <p> Не выбрано ни одной программы. </p>
+                  </div>
+                </md-list-item>
+              </md-list>
+              <h2 class="md-title">Доступные программы:</h2>
+              <md-list>
+                <md-list-item ng-repeat="program in availablePrograms" class="md-clickable">
+                  <md-button ng-click="addToArray(program, $index)" class="program-button md-no-style">
+                    <div class="md-list-item-inner ng-scope">
+                      <p> {{ program.title }} </p>
+                    </div>
+                  </md-button>
+                </md-list-item>
+                <md-list-item ng-if="availablePrograms.length == 0">
+                  <div class="md-list-item-inner ng-scope">
+                    <p> Выбраны все возможные программы или программ нет. </p>
+                  </div>
+                </md-list-item>
+              </md-list>
+            </md-tab-body>
+          </md-tab>
+        </md-tabs>
+        <section layout="row" layout-align="center center" layout-wrap>
+          <md-button type="submit" id="edit-user-button" ng-disabled="userForm.$invalid" class="md-raised md-primary" ng-click="editUser(userEdit.userMentor)" aria-label="edit user">
+            Сохранить изменения
+          </md-button>
+        </section>
+        <section layout="row" layout-align="center center" layout-wrap>
+          <md-button id="delete-user-button" class="md-raised md-warn" ng-click="deleteUser()" aria-label="delete user">
+            Удалить пользователя
+          </md-button>
+        </section>
+      </form>
+    </div>
+  </md-dialog-content>
+</md-dialog>

@@ -1,0 +1,17 @@
+
+<div class="chat-message-label avatar">
+  <a ui-sref="profileview({ userId: answerUserId })">
+    <img ng-src="{{ answerUserAvatar.url.thumb }}" ng-style="answerUserAvatar.style" />
+    <md-tooltip ng-if="answerUserFullname" md-direction="bottom">
+      <span>{{ answerUserFullname }}</span>
+    </md-tooltip>
+  </a>
+  <div class="b-answers-avatar-icon-frame">
+    <md-icon class="material-icons"
+             md-svg-icon="{{ answerIcon }}"
+             ng-class="{ 'rated-positive-icon': answerTaskRated >= 0,
+                         'rated-negative-icon': answerTaskRated < 0,
+                         'like-icon': answerUserFullname,
+                         'reply-icon': !answerUserFullname }"></md-icon>
+  </div>
+</div>

@@ -1,0 +1,140 @@
+<div class="b-payment">
+  <script>
+    function getLoginToken() {
+      var xhr = new XMLHttpRequest();
+
+      xhr.open('POST', '/getlogintoken', true);
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState != 4) return;
+
+        if (xhr.status != 200) {
+          return;
+        }
+
+        var date = new Date(new Date().getTime()+10000*24*60*60000);
+        document.cookie = "logintoken="+xhr.responseText+";path=/;domain=.spacebagel.com;expires="+date.toUTCString();
+
+        document.getElementById("standart-price-login-token").value = xhr.responseText;
+        document.getElementById("trial-price-login-token").value = xhr.responseText;
+      }
+      xhr.send(null);
+    }
+
+    function getCookie(name) {
+      var matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    function localISOString(d) {
+        var pad = function (n){return n<10 ? '0'+n : n;}, tz = d.getTimezoneOffset(), tzs = (tz>0?"-":"+") + pad(parseInt(Math.abs(tz/60)));
+
+        if (tz%60 != 0) tzs += pad(Math.abs(tz%60));
+
+        if (tz === 0) tzs = 'Z';
+
+         return d.getFullYear()+'-'
+              + pad(d.getMonth()+1)+'-'
+              + pad(d.getDate())+'T'
+              + pad(d.getHours())+':'
+              + pad(d.getMinutes())+':'
+              + pad(d.getSeconds()) + tzs;
+    };
+
+    function setEntranceTime() {
+      var date = localISOString(new Date());
+      var expires = new Date(new Date().getTime()+10000*24*60*60000);
+
+      document.cookie = "localentrancetime="+date+";path=/;domain=localhost;expires="+expires.toUTCString();
+
+      return date;
+    }
+
+    function sendEmail(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var xhr = new XMLHttpRequest();
+
+      xhr.open('POST', '/reg-subscriber', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+
+      var body = 'SUB_EMAIL=' + encodeURIComponent(document.getElementById('subscriber-email').value);
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState != 4) return;
+
+        if (xhr.status != 200) {
+          return;
+        }
+
+        if (xhr.responseText === 'ERROR') {
+          document.getElementById('submit-subscriber').value = 'ОШИБКА EMAIL';
+        }
+        else {
+          document.getElementById('submit-subscriber').value = 'КНИГА ВЫСЛАНА';
+        }
+      }
+
+      xhr.send(body);
+    }
+
+    window.onload = function() {
+      getLoginToken();
+      var localentrancetime = getCookie('localentrancetime');
+
+      if (!localentrancetime) {
+        localentrancetime = setEntranceTime();
+      }
+
+      document.getElementById("standart-price-entrance-time").value = localentrancetime;
+      document.getElementById("trial-price-entrance-time").value = localentrancetime;
+
+      var referer = getCookie('referer');
+
+      if (referer) {
+        document.getElementById("standart-price-referer").value = referer;
+        document.getElementById("trial-price-referer").value = referer;
+      }
+    };
+  </script>
+
+  <form class="b-payment-form" name="payment-form-full" id="payment-form-full" method="POST" action="https://paymaster.ru/Payment/Init">
+    <input type="email" autocomplete="off" class="b-payment__email" placeholder="Введите email" name="LOCAL_PAYER_EMAIL" onkeyup="document.getElementById('standart-price-email').value=this.value;">
+
+    <input type="hidden" name="LMI_MERCHANT_ID" value="{{ merchantIdReg }}">
+    <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="3490.00">
+    <input type="hidden" name="LMI_CURRENCY" value="RUB">
+    <input type="hidden" name="LMI_PAYMENT_DESC" value="Оплата участия в программе Космический бублик">
+    <input type="hidden" name="LMI_SIM_MODE" value="2">
+    <input type="hidden" name="LMI_PRICE_TYPE" value="STANDART">
+    <input id="standart-price-email" type="hidden" name="LMI_PAYER_EMAIL" value="">
+    <input id="standart-price-login-token" type="hidden" name="LOCAL_LOGIN_TOKEN" value="">
+    <input id="standart-price-referer" type="hidden" name="LOCAL_REFERER" value="">
+    <input id="standart-price-entrance-time" type="hidden" name="LOCAL_ENTRANCE_TIME" value="">
+    <input type="submit" id="submit-to-paymaster-full" class="b-payment__submit" value="ВНЕСТИ 3490 Р" style="margin-bottom: 60px;">
+  </form>
+
+  <form class="b-payment-form" name="payment-form-trial" id="payment-form-trial" method="POST" action="https://paymaster.ru/Payment/Init">
+    <input type="email" autocomplete="off" class="b-payment__email" placeholder="Введите email" name="LOCAL_PAYER_EMAIL" onkeyup="document.getElementById('trial-price-email').value=this.value;">
+
+    <input type="hidden" name="LMI_MERCHANT_ID" value="{{ merchantIdReg }}">
+    <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="347.00">
+    <input type="hidden" name="LMI_CURRENCY" value="RUB">
+    <input type="hidden" name="LMI_PAYMENT_DESC" value="Оплата триального участия в программе Космический бублик">
+    <input type="hidden" name="LMI_SIM_MODE" value="2">
+    <input type="hidden" name="LMI_PRICE_TYPE" value="TRIAL">
+    <input id="trial-price-email" type="hidden" name="LMI_PAYER_EMAIL" value="">
+    <input id="trial-price-login-token" type="hidden" name="LOCAL_LOGIN_TOKEN" value="">
+    <input id="trial-price-referer" type="hidden" name="LOCAL_REFERER" value="">
+    <input id="trial-price-entrance-time" type="hidden" name="LOCAL_ENTRANCE_TIME" value="">
+    <input type="submit" id="submit-to-paymaster-trial" class="b-payment__submit" value="ВНЕСТИ 347 Р" style="margin-bottom: 60px;">
+  </form>
+
+  <form class="b-payment-form" name="subscribe_form" id="subscribe-form" onsubmit="sendEmail(event)">
+    <input type="email" autocomplete="off" class="b-payment__email" id="subscriber-email" placeholder="Введите email" name="SUB_EMAIL">
+    <input type="submit" id="submit-subscriber" class="b-payment__submit" value="ПОЛУЧИТЬ КНИГУ">
+  </form>
+</div>

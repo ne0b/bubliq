@@ -1,0 +1,1 @@
+0 3 * * * root mkdir -p /var/backups/mongodb && cd /var/backups/mongodb && mongodump --host mongoa.local:27017 --db entry --out /var/backups/mongodb && tar cvzf entry.tgz entry

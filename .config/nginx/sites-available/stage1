@@ -1,0 +1,113 @@
+# HTTP
+server {
+    listen 80; # if this is not a default server, remove "default_server"
+    #listen [::]:80 default_server ipv6only=on;
+
+    root /opt/stage1/app/programs/web.browser/app; # root is irrelevant
+    index index.html index.htm; # this is also irrelevant
+
+    server_name stage1.spacebagel.com; # the domain on which we want to host the application. Since we set "default_server" previously, nginx will answer all hosts anyway.
+
+    client_max_body_size 20m;
+    large_client_header_buffers 8 32k;
+
+    # redirect non-SSL to SSL
+    location / {
+        rewrite     ^ https://$server_name$request_uri? redirect;
+    }
+
+    if ($http_user_agent ~ "MSIE" ) {
+        return 303 https://browser-update.org/update.html;
+    }
+}
+
+# HTTPS server
+server {
+    listen 443 ssl spdy; # we enable SPDY here
+    server_name stage1.spacebagel.com; # this domain must match Common Name (CN) in the SSL certificate
+
+    client_max_body_size 20m;
+    large_client_header_buffers 8 32k;
+
+    root /opt/stage1/app/programs/web.browser/app; # irrelevant
+    index index.html; # this is also irrelevant
+
+    ssl_certificate /etc/nginx/ssl/stage1.crt; # full path to SSL certificate and CA certificate concatenated together
+    ssl_certificate_key /etc/nginx/ssl/stage1.key; # full path to SSL key
+
+    # performance enhancement for SSL
+    ssl_stapling on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 5m;
+
+    # safety enhancement to SSL: make sure we actually use a safe cipher
+    ssl_prefer_server_ciphers on;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK';
+
+    # config to enable HSTS(HTTP Strict Transport Security) https://developer.mozilla.org/en-US/docs/Security/HTTP_Strict_Transport_Security
+    # to avoid ssl stripping https://en.wikipedia.org/wiki/SSL_stripping#SSL_stripping
+    add_header Strict-Transport-Security "max-age=31536000;";
+
+    # If your application is not compatible with IE <= 10, this will redirect visitors to a page advising a browser update
+    # This works because IE 11 does not present itself as MSIE anymore
+    if ($http_user_agent ~ "MSIE" ) {
+        return 303 https://browser-update.org/update.html;
+    }
+
+    # WORK MODE
+    location / {
+        error_page 463 = @meteor;
+        return 463;
+    }
+
+#    # MAINTENANCE
+#     location / {
+#       root /opt/stage1/maintenance;
+#       try_files $uri $uri/ /index.html;
+#    }
+
+    # pass all requests to Meteor
+    location @meteor {
+        proxy_pass http://127.0.0.1:8090;
+        proxy_http_version 1.1;
+        proxy_set_header   Upgrade $http_upgrade; # allow websockets
+        proxy_set_header   Connection $connection_upgrade;
+        proxy_set_header   X-Real-IP $remote_addr;
+        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   Host $http_host;
+        proxy_set_header   X-NginX-Proxy    true;
+        proxy_redirect off;
+
+        #proxy_set_header X-Forwarded-For $remote_addr; # preserve client IP
+
+        proxy_buffering on;
+        proxy_buffers 32 32k;
+        proxy_buffer_size 32k;
+
+        # For avoid 499 HTTP code error
+        proxy_ignore_client_abort on;
+    }
+
+    ## serve static files by nginx instead of Meteor (the public/ folder)
+    location /files/avatars/ {
+      root /opt/stage1/shared;
+      add_header Cache-Control "private, must-revalidate, post-check=0, pre-check=0";
+      access_log off;
+      error_page 404 @missing_avatar;
+    }
+    location @missing_avatar {
+      return 302 /images/anonymous.png;
+    }
+
+    ## serve users uploaded files
+    location /files/images/ {
+      root /opt/stage1/shared;
+      expires 30d;
+      add_header Pragma public;
+      add_header Cache-Control "public";
+    }
+
+}
+

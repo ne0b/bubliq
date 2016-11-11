@@ -1,0 +1,153 @@
+<md-progress-circular ng-if="!profileView.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+<md-subheader ng-if="profileView.dataReady==='error'" class="md-primary">{{ profileView.dataError }}</md-subheader>
+
+<div ng-if="profileView.dataReady" flex layout="row" layout-align="center" layout-wrap>
+  <div class="transparent-frame content-transparent-frame m-overflow-x-hidden" flex="95">
+    <div class="b-logout-icon" ng-click="$logout()">
+      <md-icon class="menu-icon menu-icon--black" md-svg-icon="action:ic_exit_to_app_24px"></md-icon>
+    </div>
+
+    <div ng-if="profileView.user._id === $root.currentUser._id && !(profileView.user.profile.name && profileView.user.profile.lastname && profileView.user.profile.avatar)">
+      <div class="b-empty-profile-text">
+        <div>Привет, это твой профиль.</div>
+        <div>
+          Пожалуйста, добавь фото на аватар и заполни информацию о себе.
+          Будем знакомиться.
+          Кроме личной здесь будет собираться информация о твоих наградах и других успехах в игре.
+        </div>
+      </div>
+
+      <md-button ng-if="profileView.user._id===$root.currentUser._id" ui-sref="profile" class="md-primary b-md-primary-button b-empty-profile-button">РЕДАКТИРОВАТЬ ПРОФИЛЬ</md-button>
+    </div>
+
+    <div ng-if="profileView.user._id !== $root.currentUser._id || (profileView.user.profile.name && profileView.user.profile.lastname && profileView.user.profile.avatar)">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <md-list>
+              <md-list-item class="md-2-line">
+                <div class="md-list-item-text">
+                  <h2>{{ profileView.user.profile.name }} {{ profileView.user.profile.lastname }}</h2>
+                  <h4>{{ profileView.user.emails[0].address }}</h4>
+                  <h3 style="color: {{profileView.user.stateColor}}">
+                    <strong>
+                      <i class="fa {{ profileView.user.lastDevice.icon }}" aria-hidden="true"></i>
+                      <span>{{profileView.user.lastActivity}}</span>
+                      <md-tooltip md-direction="bottom"> {{ profileView.user.lastDevice.name }} </md-tooltip>
+                    </strong>
+                  </h3>
+                </div>
+              </md-list-item>
+              <md-list-item class="md-2-line">
+                <div class="md-list-item-text">
+                  <md-button ng-if="profileView.user._id===$root.currentUser._id" ui-sref="profile" class="md-primary b-md-primary-button b-edit-profile-button">РЕДАКТИРОВАТЬ ПРОФИЛЬ</md-button>
+                  <md-button ng-click="profileView.openChat()" ng-if="!profileView.sameUser" class="md-primary b-md-primary-button b-edit-profile-button">Отправить сообщение</md-button>
+                </div>
+              </md-list-item>
+            </md-list>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <div style="max-width: 250px; margin: 0 auto;">
+              <md-card>
+                <img ng-src="{{ profileView.user.profile.avatar.url.cropped }}" ng-style="profileView.user.profile.avatar.style" class="md-card-image">
+                <md-card-content style="position: relative;">
+                  <p class="margin-reset" ng-if="(!profileView.getTasksReview() && !profileView.getUsersManage()) || profileView.user._id===$root.currentUser._id" style="text-align:center;">
+                    Оценка контекста:
+                    <strong ng-if="profileView.user.profile.contextgrade">{{ profileView.user.profile.contextgrade }}</strong>
+                    <strong ng-if="!profileView.user.profile.contextgrade">Нет</strong>
+                  </p>
+                  <div class="b-profile-grade-block">
+                    <md-input-container ng-if="(profileView.getTasksReview() || profileView.getUsersManage()) && !(profileView.user._id===$root.currentUser._id)" class="md-block margin-reset">
+                      <div>Оценка контекста</div>
+                      <input name="user context grade" id="contextgrade" type="number" ng-model="profileView.user.profile.contextgrade">
+                    </md-input-container>
+                    <md-button ng-if="(profileView.getTasksReview() || profileView.getUsersManage()) && !(profileView.user._id===$root.currentUser._id)" ng-click="profileView.rateUser()" class="rate-user-button md-icon-button md-primary" aria-div="save context grade">
+                      <md-icon class="menu-icon menu-icon--black" md-svg-icon="action:ic_done_24px"></md-icon>
+                      <md-tooltip md-direction="bottom">
+                        сохранить оценку
+                      </md-tooltip>
+                    </md-button>
+                  </div>
+                  <div class="b-profile-likes-counters-wrapper">
+                    {{ profileView.user.counters.program.title }}:
+                    <likes-counter counter-name="'Отчеты'" likes-count="profileView.user.counters.givenTasksLikesCount"></likes-counter>
+                    <likes-counter counter-name="'Комментарии'" likes-count="profileView.user.counters.commentsLikesCount"></likes-counter>
+                  </div>
+                </md-card-content>
+              </md-card>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <referal-fab></referal-fab>
+
+      <div>
+
+        <md-list>
+
+          <md-list-item ng-if="profileView.user.profile.birthday" class="md-2-line">
+            <div class="md-list-item-text">
+              <p>Дата рождения</p>
+              <div>{{ profileView.user.profile.birthday }}</div>
+            </div>
+          </md-list-item>
+
+          <div class="container-fluid">
+            <div class="row">
+
+              <div class="col-md-6" ng-if="profileView.user.profile.country">
+                <md-list-item ng-if="profileView.user.profile.country" class="md-2-line" flex-grow="0">
+                  <div class="md-list-item-text">
+                    <p>Страна</p>
+                    <div>{{ profileView.user.profile.country }}</div>
+                  </div>
+                </md-list-item>
+              </div>
+
+              <div class="col-md-6" ng-if="profileView.user.profile.town">
+                <md-list-item ng-if="profileView.user.profile.town" class="md-2-line" flex-grow="0">
+                  <div class="md-list-item-text">
+                    <p>Город</p>
+                    <div>{{ profileView.user.profile.town }}</div>
+                  </div>
+                </md-list-item>
+              </div>
+
+            </div>
+          </div>
+
+          <md-list-item ng-if="profileView.user.profile.about" class="md-3-line">
+            <div class="md-list-item-text">
+              <p>О себе</p>
+              <div class="margin-reset" style="white-space:pre-wrap;">{{ profileView.user.profile.about }}</div>
+            </div>
+          </md-list-item>
+
+          <md-list-item ng-if="profileView.user.profile.wishlist && profileView.user.profile.wishlist.length > 0" class="md-3-line">
+            <div class="md-list-item-text">
+              <p>Список желаний</p>
+              <div class="margin-reset" ng-repeat="wish in profileView.user.profile.wishlist">
+                {{ wish }}
+              </div>
+            </div>
+          </md-list-item>
+
+          <md-list-item ng-if="profileView.user.profile.socialLinks && profileView.user.profile.socialLinks.length > 0" class="md-3-line">
+            <div class="md-list-item-text">
+              <p>Я в соцсетях</p>
+              <div class="margin-reset" ng-repeat="socialLink in profileView.user.profile.socialLinks">
+                <social-link social-link-to="socialLink"></social-link>
+              </div>
+            </div>
+          </md-list-item>
+
+        </md-list>
+
+      </div>
+
+      <given-tasks-list ng-if="profileView.tasks && profileView.tasks.length > 0"
+                        given-tasks="profileView.infiniteTasks"></given-tasks-list>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+.b-rounded-input-container{
+  width: 100%;
+  margin: 0;
+  height: 65px;
+
+  &.md-input-invalid [ng-message] {
+    color: #ff7f29 !important;
+  }
+
+  &.md-input-focused{
+    label{
+      color: #ff7f29 !important;
+    }
+  }
+
+  &.md-input-has-value{
+    label{
+      color: #ffffff !important;
+    }
+  }
+
+  &.md-input-focused, &.md-input-has-value{
+    label{
+      -webkit-transform: translate3d(0, 0px, 0) scale(0.75) !important;
+      transform: translate3d(0px, 0px, 0px) scale(0.75) !important;
+    }
+  }
+
+  [ng-messages] :not(.md-char-counter) {
+    color: #ff7f29 !important;
+  }
+
+  label{
+    padding-left: 20px !important;
+    color: #d7d9e0;
+    top: -14px;
+  }
+
+  input{
+    padding: 8px 12px 8px 20px !important;
+    border-style: none;
+    border-radius: 25px;
+    color: rgb(215, 217, 224);
+    height: 42px;
+    line-height: 42px;
+    background-color: rgba(255, 255, 255, 0.239216);
+  }
+}
+
+.b-primary-button{
+  &.b-transparent-background{
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    width: 50%;
+  }
+}

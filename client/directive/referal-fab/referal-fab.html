@@ -1,0 +1,9 @@
+
+<div class="b-referal-block">
+  <md-button ng-click="toggleReferalLink()" aria-label="menu" class="md-fab md-warn">
+    <md-icon md-svg-src="social:ic_group_add_24px"></md-icon>
+    <md-tooltip md-direction="top"> пригласить участников </md-tooltip>
+  </md-button>
+
+  <input id="referallink" ng-cloak select-on-click type="text" readonly="readonly" ng-class="{ 'b-referal-block__input--hidden': linkClosed }" class="b-referal-block__input" ng-value="referalLink">
+</div>

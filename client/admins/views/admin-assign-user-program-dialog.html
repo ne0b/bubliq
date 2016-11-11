@@ -1,0 +1,64 @@
+<md-dialog class="b-dialog" aria-label="programAssign" ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2> Назначение программ и наставника </h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-icon="content:ic_clear_24px" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <form name="userForm">
+        <md-input-container>
+          <label>Наставник</label>
+          <md-select required ng-model="userMentor">
+            <md-option ng-repeat="mentor in usersMentors" value="{{mentor._id}}">{{ mentor.profile.name }} {{ mentor.profile.lastname }} {{mentor.emails[0].address}} - {{getRolePresetTitle(mentor.profile.role)}}</md-option>
+          </md-select>
+        </md-input-container>
+        <h2 class="md-title">Выбранные программы:</h2>
+        <md-list>
+          <md-list-item ng-repeat="program in selectedPrograms" class="md-clickable">
+            <md-button ng-click="removeFromArray(program, $index)" class="program-button md-no-style">
+              <div class="md-list-item-inner ng-scope">
+                <p> {{ program.title }} </p>
+              </div>
+            </md-button>
+            <md-input-container>
+              <label>Поток</label>
+              <md-select required ng-model="selectedStreams[$index]">
+                <md-option ng-repeat="stream in programStreams(program)" value="{{stream._id}}">{{stream.title}}</md-option>
+              </md-select>
+            </md-input-container>
+          </md-list-item>
+          <md-list-item ng-if="selectedPrograms.length == 0">
+            <div class="md-list-item-inner ng-scope">
+              <p> Не выбрано ни одной программы. </p>
+            </div>
+          </md-list-item>
+        </md-list>
+        <h2 class="md-title">Доступные программы:</h2>
+        <md-list>
+          <md-list-item ng-repeat="program in availablePrograms" class="md-clickable">
+            <md-button ng-click="addToArray(program, $index)" class="program-button md-no-style">
+              <div class="md-list-item-inner ng-scope">
+                <p> {{ program.title }} </p>
+              </div>
+            </md-button>
+          </md-list-item>
+          <md-list-item ng-if="availablePrograms.length == 0">
+            <div class="md-list-item-inner ng-scope">
+              <p> Выбраны все возможные программы или программ нет. </p>
+            </div>
+          </md-list-item>
+        </md-list>
+        <section layout="row" layout-align="center center">
+          <md-button type="submit" class="md-raised md-primary" ng-click="addPrograms()" aria-label="addprograms" ng-disabled="userForm.$invalid">
+            Сохранить изменения
+          </md-button>
+        </section>
+      </form>
+    </div>
+  </md-dialog-content>
+</md-dialog>

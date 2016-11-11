@@ -1,0 +1,9 @@
+# HTTP
+server {
+    listen 176.112.200.167:80;
+
+    server_name www.entry.spacebagel.com;
+
+    return 301 $scheme://entry.spacebagel.com$request_uri;
+}
+

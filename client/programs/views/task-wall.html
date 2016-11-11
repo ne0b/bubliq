@@ -1,0 +1,114 @@
+<md-progress-circular ng-if="!taskWall.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+<md-subheader ng-if="taskWall.dataReady==='error'" class="md-primary">{{ taskWall.dataError }}</md-subheader>
+
+<div class="b-payment" ng-if="taskWall.dataReady && taskWall.noGivenTasks">
+  <div flex layout="row" class="b-payment__info" >
+    <div class="b-rules-frame transparent-frame content-transparent-frame m-padding-50 m-text-align-center">
+      <div>
+        Еще никто не оставил свой отчет для этого задания.
+      </div>
+      <div>
+        <md-button ng-if="$root.currentUser" id="logout-button" ng-click="$back()" aria-label="logout">
+          <md-icon class="menu-icon menu-icon--black" md-svg-icon="navigation:ic_arrow_back_24px"></md-icon>
+          Вернуться Назад
+        </md-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-on-scroll-down="taskWall.moreGivenTasks()" class="b-scroll-down-wrapper" ng-if="taskWall.dataReady && taskWall.giventasks && taskWall.giventasks.length > 0">
+  <md-card class="margin-reset m-background-transparent" style="box-shadow: none;">
+    <md-card-content class="padding-reset">
+      <h3 class="b-rules-title b-rules-title-tasks"> ОТЧЕТЫ </h3>
+
+      <div layout="row" layout-wrap layout-xs="row">
+        <div flex="100" flex-lg="50" flex-gt-lg="50" layout="column" ng-repeat="giventask in taskWall.giventasks">
+          <md-card class="transparent-frame">
+            <md-card-header class="m-padding-bottom-0">
+              <md-card-avatar>
+                <a ui-sref="profileview({userId:giventask.userId})" class="md-user-avatar">
+                  <img ng-src="{{ giventask.owner.profile.avatar.url.cropped }}" ng-style="giventask.owner.profile.avatar.style" />
+                </a>
+              </md-card-avatar>
+              <div>
+                <md-card-header-text style="position:relative;">
+                  <span class="md-title">
+                    <a ui-sref="profileview({userId:giventask.userId})">{{ giventask.owner.profile.fullname }}</a>
+                  </span>
+                  <span class="md-subhead" ng-if="giventask.report && giventask.report.reportSendAt">
+                    {{ taskWall.sentTime(giventask.report.reportSendAt) }}
+                  </span>
+                  <span ng-if="(!taskWall.getTasksReview || giventask.userId === $root.currentUser._id) && giventask.task.maxgrade" class="md-subhead">
+                    Оценка:
+                    <span ng-if="!giventask.grade">Нет</span>
+                    <span ng-if="giventask.grade">{{ giventask.grade }}</span>
+                  </span>
+                </md-card-header-text>
+                <div flex layout="row" ng-if="taskWall.getTasksReview && giventask.userId !== $root.currentUser._id && giventask.task.maxgrade">
+                  <md-input-container style="max-width: 50%;" class="b-hide-errors-spacer md-block">
+                    <label>Оценка</label>
+                    <input name="user context grade" id="contextgrade" type="number" ng-model="giventask.grade">
+                  </md-input-container>
+                  <md-button style="top: 12px;" ng-click="taskWall.rateTask(giventask)" class="md-icon-button md-primary" aria-label="save context grade">
+                    <md-icon class="menu-icon menu-icon--blue" md-svg-icon="action:ic_done_24px"></md-icon>
+                    <md-tooltip md-direction="bottom">
+                      сохранить оценку
+                    </md-tooltip>
+                  </md-button>
+                </div>
+              </div>
+            </md-card-header>
+            <md-card-content ng-class="{showmore: taskWall.showmore[giventask._id], showless: !taskWall.showmore[giventask._id]}" class="m-padding-top-0 taskwall-report-message" ng-click="taskWall.showMore(giventask._id)">
+              <div class="fr-view fr-view--space" ng-bind-html="giventask.report.message" style="word-wrap: break-word;"></div>
+              <div class="b-task-blur-bottom"></div>
+            </md-card-content>
+            <md-card-actions class="m-margin-bottom-0" layout="row" layout-align="start center">
+              <md-button class="md-primary b-md-primary-button" ui-sref="tasks.details({userId:giventask.userId, taskId:giventask._id})">ПОДРОБНЕЕ</md-button>
+              <div class="b-like-button m-margin-left-10 margin-reset m-min-height">
+                <a style="{{ giventask.userLikeColor }}" ng-click="taskWall.like(giventask._id)">
+                  <md-icon class="menu-icon" style="{{ giventask.userLikeColor }}" md-svg-icon="action:ic_favorite_24px"></md-icon>
+                  {{ giventask.likescount }}
+                </a>
+              </div>
+            </md-card-actions>
+            <md-card-actions>
+              <task-likes likes="giventask.likes" ng-if="giventask.likes && giventask.likes.length > 0"></task-likes>
+            </md-card-actions>
+            <md-card-actions class="m-margin-top-0" layout="row" layout-align="start center" ng-hide="taskWall.showcomments[giventask._id]">
+              <md-button class="md-primary b-md-primary-button" ng-click="taskWall.showComments(giventask._id)">
+                КОММЕНТАРИИ
+                <span ng-if="giventask.commentsCount">({{ giventask.commentsCount }})</span>
+              </md-button>
+            </md-card-actions>
+            <md-card-content class="animate-hide" ng-if="taskWall.showcomments[giventask._id]">
+              <md-list ng-if="giventask.comments && giventask.comments.length > 0">
+                <md-list-item class="md-3-line" ng-repeat="comment in giventask.comments">
+                  <a ui-sref="profileview({userId:comment.ownerId})" class="md-avatar">
+                    <img ng-src="{{ comment.owner.profile.avatar.url.cropped }}" ng-style="comment.owner.profile.avatar.style" />
+                  </a>
+                  <div class="md-list-item-text-custom">
+                    <h3>
+                      <a class="user-profile-link" ui-sref="profileview({userId:comment.ownerId})">
+                        {{ comment.owner.profile.fullname }}
+                      </a>
+                    </h3>
+                    <div class="fr-view fr-view--space" ng-bind-html="comment.message" style="word-wrap:break-word;"></div>
+                  </div>
+                </md-list-item>
+              </md-list>
+              <md-input-container class="md-block md-has-icon--send-comment">
+                <button ng-click="taskWall.sendCommentOnButton(giventask._id)" class="b-taskwall-comment-send-button md-fab md-mini md-button">
+                  <md-icon class="menu-icon menu-icon--send-icon" md-svg-icon="content:ic_send_24px"></md-icon>
+                </button>
+                <label>Введите комментарий</label>
+                <textarea name="message" id="message" ng-model="taskWall.newComments[giventask._id]" ng-keyup="taskWall.sendCommentOnEnter(giventask._id, $event)"></textarea>
+              </md-input-container>
+            </md-card-content>
+          </md-card>
+        </div>
+        <md-progress-circular ng-if="taskWall.isLoading" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+      </div>
+    </md-card-content>
+  </md-card>
+</div>

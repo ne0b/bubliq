@@ -1,0 +1,26 @@
+
+<md-list>
+  <md-virtual-repeat-container id="vertical-container">
+    <md-list-item md-virtual-repeat="task in givenTasks" md-on-demand class="md-with-secondary secondary-button-padding">
+      <md-button ng-if="task.task" md-no-ink="true" aria-div="task info" ui-sref="tasks.details({userId: task.userId, taskId: task._id})" class="md-no-style">
+          <task-status status-icon="task.statusIcon"></task-status>
+
+          <div class="md-list-item-inner ng-scope b-tasks-list-item">
+            {{ task.task.title }}
+          </div>
+
+          <div class="b-tasks-do-until-text">
+            {{ task.endtime }}
+            <md-tooltip md-direction="top">
+              Выполнить до
+            </md-tooltip>
+          </div>
+
+          <show-grade class="given-tasks-list-show-grade"
+                      rated-grade="task.grade"
+                      max-grade="task.task.maxgrade"
+                      grade-fill="task.gradeFill"></show-grade>
+      </md-button>
+    </md-list-item>
+  </md-virtual-repeat-container>
+</md-list>

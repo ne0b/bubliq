@@ -1,0 +1,21 @@
+angular.module('bubliq').constant('TITLES', {
+  ADMIN_CTRL: 'Админка',
+  ADMIN_ADVERT_CTRL: 'Рекламное сообщение',
+  ADMIN_PROGRAM_RULES_CTRL: 'Правила программы',
+  ADMIN_PROGRAMS_CTRL: 'Программы',
+  ADMIN_STREAMS_CTRL: 'Потоки',
+  ADMIN_ROLES_MANAGE_CTRL: 'Роли',
+  ADMIN_RULES_CTRL: 'Правила портала',
+  ADMIN_USERS_CTRL: 'Пользователи',
+  CHAT_LIST_CTRL: 'Сообщения',
+  CONTACTS_LIST_CTRL: '',
+  INDEX_CTRL: '',
+  MENTOR_CTRL: 'Менторка',
+  MENTOR_USERS_CTRL: 'Проверка заданий',
+  TASKS_LIST_CTRL: 'Задания',
+  PAYMENT_CTRL: 'Оплата',
+  PROFILE_VIEW_CTRL: 'Профиль',
+  PROFILE_EDIT_CTRL: 'Редактировать профиль',
+  ANSWERS_LIST_CTRL_TITLE: 'Ответы',
+  FEED_CTRL_TITLE: 'Лента'
+});

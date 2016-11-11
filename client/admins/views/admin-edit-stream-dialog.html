@@ -1,0 +1,37 @@
+<md-dialog aria-label="taskEdit"  ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2> Поток {{ newStreamValue.title }} </h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-icon="content:ic_clear_24px" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <form>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <form name="streamForm">
+          <md-input-container class="md-block">
+            <label>Название</label>
+            <input required name="title" id="tasktitle" type="text" minlength="6" ng-model="newStreamValues.title">
+            <div ng-messages="streamForm.title.$error" ng-show="streamForm.title.$dirty">
+              <div ng-message="required">
+                Это обязательное поле!
+              </div>
+              <div ng-message="minlength">
+                Минимальная длина 6 символов!
+              </div>
+            </div>
+          </md-input-container>
+          <md-datepicker required ng-model="newStreamValues.start" md-placeholder="Дата старта"></md-datepicker>
+          <section layout="row" layout-align="center center" layout-wrap>
+            <md-button type="submit" id="edit-stream-button" class="md-raised md-primary" ng-click="editStream()" aria-label="edit stream" ng-disabled="streamForm.$invalid()">
+              Сохранить изменения
+            </md-button>
+          </section>
+        </form>
+      </div>
+    </md-dialog-content>
+  </form>
+</md-dialog>

@@ -1,0 +1,24 @@
+
+<div flex layout="row" layout-align="center" layout-wrap>
+  <div flex="95" class="transparent-frame content-transparent-frame">
+    <section layout="row" layout-align="center center" layout-wrap>
+      <md-button id="add-role-button" class="md-raised md-primary" ng-click="adminRM.showEditRole($event, false)" aria-label="edit role">
+        Добавить роль
+      </md-button>
+    </section>
+
+    <md-progress-circular ng-if="!adminRM.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+    <md-subheader ng-if="adminRM.dataReady==='error'" class="md-primary">{{ adminRM.dataError }}</md-subheader>
+
+    <md-list ng-if="adminRM.dataReady">
+      <md-list-item ng-repeat="rolepreset in adminRM.rolespresets" class="md-with-secondary secondary-button-padding">
+        <md-button aria-label="edit role" ng-click="adminRM.showEditRole($event, rolepreset)" class="md-no-style">
+          <div class="md-list-item-inner ng-scope">
+            {{ rolepreset.title }}
+          </div>
+        </md-button>
+        <md-button class="md-secondary md-warn margin-reset display-none" ng-click="adminRM.deleteRolePreset(rolepreset)">Удалить</md-button>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>

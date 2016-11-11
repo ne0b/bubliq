@@ -1,0 +1,4 @@
+15 4 * * * root /sbin/initctl stop stage1
+# Instead created symlink
+#15 4 * * * root /usr/bin/rsync -avr --delete --chown=meteoruser:meteoruser root@entry.local:/opt/entry/shared /opt/stage1
+15 5 * * * root /sbin/initctl start stage1

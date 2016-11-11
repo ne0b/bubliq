@@ -1,0 +1,8 @@
+<md-input-container ng-show="searchView.showSearch" flex class="md-block b-search-input-container">
+  <label class="b-search-input-container__label">Поиск</label>
+  <input name="search" id="searchviewid" class="b-search-input-container__input" type="search" ng-keydown="searchView.search($event)" ng-paste="searchView.search($event)">
+</md-input-container>
+
+<div ng-click="searchView.toggle()" class="b-header-icon b-search-view__search-icon md-icon-button md-primary" aria-label="search toggle">
+  <md-icon class="menu-icon" md-svg-icon="{{ searchView.searchIcon }}"></md-icon>
+</div>

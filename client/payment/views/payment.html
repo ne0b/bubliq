@@ -1,0 +1,64 @@
+<div class="b-payment">
+  <md-progress-circular ng-if="!paymentCtrl.dataReady && !paymentCtrl.dataError" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+
+  <h3 class="b-payment__header" ng-if="paymentCtrl.dataReady">
+    Оплата за программу {{ paymentCtrl.paymentProgram.title }}, которая начнется {{ paymentCtrl.paymentProgram.properties.startDate }}
+  </h3>
+
+  <form ng-if="paymentCtrl.dataReady && paymentCtrl.fullOrder" class="b-payment-form" name="payment-form" id="full-payment-form" method="POST" action="https://paymaster.ru/Payment/Init">
+    <input type="hidden" name="LMI_MERCHANT_ID" value="{{ paymentCtrl.merchantId }}">
+    <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="{{ paymentCtrl.standartPrice }}.00">
+    <input type="hidden" name="LMI_CURRENCY" value="RUB">
+    <input type="hidden" name="LMI_PAYMENT_NO" value="{{ paymentCtrl.fullOrder.orderNumber }}">
+    <input type="hidden" name="LMI_PAYMENT_DESC" value="Оплата участия в программе Космический бублик">
+    <input type="hidden" name="LMI_PAYER_EMAIL" value="{{ paymentCtrl.fullOrder.sender_email }}">
+    <input type="hidden" name="LMI_SIM_MODE" value="{{ paymentCtrl.simMode }}">
+    <input type="submit" id="submit-to-paymaster" value="SUBMIT" style="display:none !important;">
+    <div ng-if="!paymentCtrl.isTrialUrl" layout layout-align="center">
+      <div onclick="document.forms['full-payment-form'].submit();" class="b-payment__submit">
+        {{ paymentCtrl.standartPrice }} {{ paymentCtrl.standartFormText }}
+      </div>
+    </div>
+    <div class="b-payment__subtext">
+    </div>
+  </form>
+
+  <form ng-if="paymentCtrl.dataReady && paymentCtrl.trialOrder && paymentCtrl.fullOrder && !paymentCtrl.hasCurrentTrialProgram" class="b-payment-form" name="payment-form" id="trial-payment-form" method="POST" action="https://paymaster.ru/Payment/Init">
+    <input type="hidden" name="LMI_MERCHANT_ID" value="{{ paymentCtrl.merchantId }}">
+    <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="{{ paymentCtrl.trialPrice }}.00">
+    <input type="hidden" name="LMI_CURRENCY" value="RUB">
+    <input type="hidden" name="LMI_PAYMENT_NO" value="{{ paymentCtrl.trialOrder.orderNumber }}">
+    <input type="hidden" name="LMI_PAYMENT_DESC" value="Оплата триального участия в программе Космический бублик">
+    <input type="hidden" name="LMI_PAYER_EMAIL" value="{{ paymentCtrl.trialOrder.sender_email }}">
+    <input type="hidden" name="LMI_SIM_MODE" value="{{ paymentCtrl.simMode }}">
+    <input type="submit" id="submit-to-paymaster" value="SUBMIT" style="display:none !important;">
+    <div ng-if="!paymentCtrl.isTrialUrl" layout layout-align="center">
+      <div onclick="document.forms['trial-payment-form'].submit();" class="b-payment__submit">
+        {{ paymentCtrl.trialPrice }} Р за пробную неделю
+      </div>
+    </div>
+    <div class="b-payment__subtext">
+      и {{ paymentCtrl.trialSurPrice }} рублей потом, когда поймешь насколько это тебе нужно
+    </div>
+  </form>
+</div>
+
+<div ng-if="paymentCtrl.hasCurrentTrialProgram && $root.currentUser.paidPrograms.indexOf(paymentCtrl.currentProgramId) === -1" flex layout="row" layout-align="center" layout-wrap>
+  <div class="b-rules-frame transparent-frame content-transparent-frame m-margin-bottom-0 m-text-align-center">
+    <h3>Поздравляем, теперь ты участник пробной недели базовой программы развития иммунитета!</h3>
+    <p>
+      Стартуем 26 ноября, в этот день рано утром будет выложен подробный организационный пост и первое задание.
+      А до этого времени заполни пожалуйста свой профиль.
+    </p>
+  </div>
+</div>
+
+<div ng-if="$root.currentUser.paidPrograms.indexOf(paymentCtrl.currentProgramId) > -1" flex layout="row" layout-align="center" layout-wrap>
+  <div class="b-rules-frame transparent-frame content-transparent-frame m-margin-bottom-0 m-text-align-center">
+    <h3>Поздравляем с успешной оплатой! Теперь ты участник базовой программы развития иммунитета.</h3>
+    <p>
+      Стартуем 26 ноября, в этот день рано утром будет выложен подробный организационный пост и первое задание.
+      А до этого времени заполни пожалуйста свой профиль.
+    </p>
+  </div>
+</div>

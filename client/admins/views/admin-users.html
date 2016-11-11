@@ -1,0 +1,181 @@
+<md-progress-circular ng-if="!adminUsers.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+
+<div flex layout="row" layout-align="center" layout-wrap ng-if="adminUsers.dataReady">
+  <div flex="95" class="transparent-frame content-transparent-frame">
+    <div class="row" style="position: relative;">
+      <md-button class="md-fab md-primary" aria-label="Download CSV" ng-click="adminUsers.exportUsers()" style="position: absolute; right: 2em; bottom: -1.4em; z-index: 1;">
+        <md-tooltip>Скачать в XLSX</md-tooltip>
+        <md-icon>file_download</md-icon>
+      </md-button>
+      <div class="col-md-6">
+        <md-input-container class="md-input-wrap md-icon-float md-block md-icon-left">
+          <label>Роли</label>
+          <md-icon ng-click="adminUsers.roles = []" ng-disabled="!adminUsers.roles.length">
+            <span class="material-icons">close</span>
+          </md-icon>
+          <md-select ng-model="adminUsers.roles" multiple>
+            <md-option ng-value="role._id" ng-repeat="role in adminUsers.rolesList">{{role.title}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div class="col-md-6">
+        <md-input-container class="md-input-wrap md-icon-float md-block md-icon-left">
+          <label>Без программ</label>
+          <md-icon ng-click="adminUsers.notprograms = []" ng-disabled="!adminUsers.notprograms.length">
+            <span class="material-icons">close</span>
+          </md-icon>
+          <md-select ng-model="adminUsers.notprograms" multiple>
+            <md-option ng-value="program._id" ng-repeat="program in adminUsers.programsList">{{program.title}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div class="col-md-6">
+        <md-input-container class="md-input-wrap md-icon-float md-block md-icon-left">
+          <label>С программами</label>
+          <md-icon ng-click="adminUsers.programs = []" ng-disabled="!adminUsers.programs.length">
+            <span class="material-icons">close</span>
+          </md-icon>
+          <md-select ng-model="adminUsers.programs" multiple>
+            <md-option ng-value="program._id" ng-repeat="program in adminUsers.programsList">{{program.title}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div class="col-md-6">
+        <md-input-container class="md-input-wrap md-icon-float md-block md-icon-left">
+          <label>В потоке</label>
+          <md-icon ng-click="adminUsers.streams = []" ng-disabled="!adminUsers.streams.length">
+            <span class="material-icons">close</span>
+          </md-icon>
+          <md-select ng-model="adminUsers.streams" multiple>
+            <md-option ng-value="stream._id" ng-repeat="stream in adminUsers.streamsList">{{stream.title}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div class="col-md-6">
+        <md-input-container class="md-input-wrap md-icon-float md-block md-icon-left">
+          <label>Оплачена программа</label>
+          <md-icon ng-click="adminUsers.paidPrograms = []" ng-disabled="!adminUsers.paidPrograms.length">
+            <span class="material-icons">close</span>
+          </md-icon>
+          <md-select ng-model="adminUsers.paidPrograms" multiple>
+            <md-option ng-value="program._id" ng-repeat="program in adminUsers.programsList">{{program.title}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div class="col-md-6">
+        <md-input-container class="md-input-wrap md-icon-float md-block md-icon-left">
+          <label>Бесплатный триал для</label>
+          <md-icon ng-click="adminUsers.trialProgramsFree = []" ng-disabled="!adminUsers.trialProgramsFree.length">
+            <span class="material-icons">close</span>
+          </md-icon>
+          <md-select ng-model="adminUsers.trialProgramsFree" multiple>
+            <md-option ng-value="program._id" ng-repeat="program in adminUsers.programsList">{{program.title}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div class="col-md-6">
+        <md-input-container class="md-input-wrap md-icon-float md-block md-icon-left">
+          <label>Платный триал для</label>
+          <md-icon ng-click="adminUsers.trialProgramsPaid = []" ng-disabled="!adminUsers.trialProgramsPaid.length">
+            <span class="material-icons">close</span>
+          </md-icon>
+          <md-select ng-model="adminUsers.trialProgramsPaid" multiple>
+            <md-option ng-value="program._id" ng-repeat="program in adminUsers.programsList">{{program.title}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div class="col-xs-6">
+        <div class="md-input-wrap">
+          <label class="hide-xs">Регистрация после</label>
+          <md-datepicker ng-model="adminUsers.dateFrom"></md-datepicker>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="md-input-wrap">
+          <label class="hide-xs">Регистрация до</label>
+          <md-datepicker ng-model="adminUsers.dateTo"></md-datepicker>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <md-input-container class="md-input-wrap">
+          <md-checkbox ng-model="adminUsers.hasmentor" aria-label="hasmentor">Есть наставник</md-checkbox>
+        </md-input-container>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <md-input-container class="md-input-wrap">
+          <md-checkbox ng-model="adminUsers.hasntmentor" aria-label="hasntmentor">Без наставника</md-checkbox>
+        </md-input-container>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <md-input-container class="md-input-wrap">
+          <md-checkbox ng-model="adminUsers.accepted" aria-label="accepted">Принял условия сервиса</md-checkbox>
+        </md-input-container>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <md-input-container class="md-input-wrap">
+          <md-checkbox ng-model="adminUsers.verified" aria-label="verified">Подтвержден еmail</md-checkbox>
+        </md-input-container>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <md-input-container class="md-input-wrap">
+          <md-checkbox ng-model="adminUsers.referals" aria-label="referals">Есть рефералы</md-checkbox>
+        </md-input-container>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <md-input-container class="md-input-wrap">
+          <md-checkbox ng-model="adminUsers.unsub" aria-label="unsub">Отписался</md-checkbox>
+        </md-input-container>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-4">
+        <md-input-container class="md-input-wrap">
+          <md-checkbox ng-model="adminUsers.remoteSubscriber" aria-label="remoteSubscriber">Подписчик</md-checkbox>
+        </md-input-container>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-4" style="padding-bottom: 42px;">
+        Загрузка изменений
+        <input upload-file type="file" name="file">
+      </div>
+    </div>
+    <md-divider></md-divider>
+    <md-list>
+      <md-virtual-repeat-container id="vertical-container">
+        <md-list-item md-virtual-repeat="user in adminUsers.scrollCtrl" md-on-demand class="noright md-2-line">
+          <a ui-sref="profileview({userId:user._id})" class="md-avatar" aria-label="openProfile" ng-if="user">
+            <md-tooltip>Профиль</md-tooltip>
+            <img ng-src="{{ user.profile.avatar.url.thumb }}" ng-style="user.profile.avatar.style"/>
+          </a>
+          <div class="md-list-item-text" layout="column" ng-if="user">
+            <h3>{{user.profile.fullname}}</h3>
+            <p>
+              <strong>{{user.profile.rolename}}</strong>
+              <span ng-if="user.referalsCount">, рефералов: {{user.referalsCount}}</span>
+            </p>
+          </div>
+            <div class="_md-secondary-container" style="display: flex;padding-top: 1em;">
+              <md-button class="md-icon-button md-primary" ng-if="user && user.referalsCount" ng-click="adminUsers.showReferals(user)" type="button" aria-label="showUsersReferals" style="width: auto;">
+                <span>{{user.referalsCount}}</span>
+                <md-icon>people</md-icon>
+                <md-tooltip>Показать рефералов</md-tooltip>
+              </md-button>
+              <md-button class="md-icon-button" ng-click="adminUsers.impersonateUser(user)" type="button" aria-label="impersonateUser" ng-if="user">
+              <md-tooltip>Имперсонация</md-tooltip>
+                <md-icon>lock</md-icon>
+              </md-button>
+              <md-button class="md-icon-button" ng-click="adminUsers.showEditUser($event, user._id)" type="button" aria-label="editUserPrefs" ng-if="user">
+                <md-tooltip>Параметры пользователя</md-tooltip>
+                <md-icon>settings</md-icon>
+              </md-button>
+              <md-button class="md-icon-button" ng-disabled="!user.emails[0].address" href="mailto:{{user.emails[0].address}}" type="button" aria-label="mailtoUser" ng-if="user">
+                <md-tooltip>Отправить email</md-tooltip>
+                <md-icon>mail</md-icon>
+              </md-button>
+              <md-button class="md-icon-button" ng-click="adminUsers.assignTasksToUser(user._id)" type="button" aria-label="assign tasks to user" ng-if="user && adminUsers.canAssign">
+                <md-icon>assignment_ind</md-icon>
+                <md-tooltip>Выдать задания</md-tooltip>
+              </md-button>
+            </div>
+        </md-list-item>
+      </md-virtual-repeat-container>
+    </md-list>
+  </div>
+</div>

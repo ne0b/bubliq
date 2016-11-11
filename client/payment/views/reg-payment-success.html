@@ -1,0 +1,33 @@
+
+<div ng-if="$root.currentUser.profile.nopassword" flex layout="row" layout-align="center" layout-wrap>
+  <div flex-lg="35" flex-gt-lg="25" flex-md="35" flex-sm="90">
+    <div>
+      <form name="passwordForm" class="m-margin-top-65" ng-if="$root.currentUser">
+        <md-input-container class="b-rounded-input-container">
+          <label>Email</label>
+          <input required name="email" id="email" type="email" ng-model="$root.currentUser.emails[0].address" disabled="true">
+        </md-input-container>
+        <md-input-container class="b-rounded-input-container">
+          <label>Пароль</label>
+          <input required name="password" id="password" type="password" ng-model="rpSuccess.password" minlength="6" oninvalid="this.setCustomValidity('Заполните это поле.')" oninput="setCustomValidity('')">
+          <div ng-messages="passwordForm.password.$error" class="m-text-align-center" ng-show="passwordForm.password.$dirty" multiple>
+            <div ng-message="required">
+              Это обязательное поле!
+            </div>
+            <div ng-message="minlength">
+              Минимальная длина 6 символов!
+            </div>
+          </div>
+        </md-input-container>
+        <div style="color: red;">
+          {{ rpSuccess.error }}
+        </div>
+        <section layout="row" layout-align="center center" layout-wrap>
+          <md-button id="set-password-button" class="md-raised md-primary b-primary-button" ng-click="rpSuccess.setPassword()" aria-label="set password" ng-disabled="rpSuccess.passwordForm.$invalid()">
+            Задать пароль
+          </md-button>
+        </section>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<md-dialog aria-label="deleteProgram" ng-cloak>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <div style="margin-bottom: 20px;" ng-bind-html="deleteProgress.currentAction"></div>
+      <md-progress-linear md-mode="determinate" value="{{ deleteProgress.currentProgress }}"></md-progress-linear>
+
+      <section ng-if="deleteProgress.done" layout="row" layout-align="center center" layout-wrap>
+        <md-button class="md-raised md-primary" ng-click="hide()" aria-label="ok">
+          ОК
+        </md-button>
+      </section>
+    </div>
+  </md-dialog-content>
+</md-dialog>

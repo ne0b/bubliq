@@ -1,0 +1,14 @@
+<md-progress-circular ng-if="!adminPR.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+<md-subheader ng-if="adminPR.dataReady==='error'" class="md-primary">{{ adminPR.dataError }}</md-subheader>
+
+<div flex layout="row" layout-align="center" layout-wrap ng-if="adminPR.dataReady">
+  <div flex="95" class="transparent-frame content-transparent-frame">
+    <form class="form-horizontal col-xs-12" ng-cloak>
+        <textarea froala="adminPR.froalaOptions" ng-model="adminPR.rules.text" type="text" autocomplete="off"
+               name="rules" placeholder="Правила" id="rules"></textarea>
+    </form>
+    <md-button class="md-raised md-warn" ng-click="adminPR.editRules()" aria-label="saverules">
+      Сохранить
+    </md-button>
+  </div>
+</div>

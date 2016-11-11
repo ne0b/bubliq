@@ -1,0 +1,16 @@
+<script>fbq('track', 'Lead');</script>
+<div class="b-payment">
+  <h3 class="b-rules-title">ПРАВИЛА НАШЕГО СООБЩЕСТВА</h3>
+
+  <md-progress-circular ng-if="!rc.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+  <md-subheader ng-if="rc.dataReady==='error'" class="md-primary">{{ rc.dataError }}</md-subheader>
+
+  <div ng-if="rc.dataReady" flex layout="row" layout-align="center" layout-wrap class="b-payment__info b-payment__info--rules">
+    <div class="fr-view b-rules-frame transparent-frame content-transparent-frame" ng-bind-html="rc.rules.text"></div>
+  </div>
+  <section ng-if="rc.dataReady" layout="column" layout-align="center center" layout-wrap>
+    <md-button id="accept-rules" class="md-raised md-primary b-primary-button b-primary-button-accept-rules" ng-click="rc.acceptRules()" aria-label="acceptrules">
+      Принять
+    </md-button>
+  </section>
+</div>

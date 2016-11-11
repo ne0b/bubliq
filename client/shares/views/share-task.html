@@ -1,0 +1,68 @@
+<md-progress-circular ng-if="!shareTask.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+<md-subheader ng-if="shareTask.dataReady==='error'" class="md-primary">{{ shareTask.dataError }}</md-subheader>
+
+<div flex layout="row" layout-align="center" layout-wrap ng-if="shareTask.dataReady && shareTask.giventask">
+  <div flex-lg="95" flex-gt-lg="95" flex-md="95" flex-sm="100" class="transparent-frame content-transparent-frame">
+    <div layout="row" layout-wrap>
+      <div style="width:250px;" layout="column">
+        <md-card>
+          <a>
+            <img ng-src="{{ shareTask.giventask.owner.profile.avatar.url.cropped }}" ng-style="shareTask.giventask.owner.profile.avatar.style" class="md-card-image">
+          </a>
+          <md-card-content style="position: relative;">
+            <div>{{ shareTask.giventask.owner.profile.name }} {{ shareTask.giventask.owner.profile.lastname }}</div>
+            <div class="giventask-giventime">
+              <span>
+                {{ shareTask.starttime }}
+                <md-tooltip md-direction="bottom">
+                  Дата выдачи
+                </md-tooltip>
+              </span>
+            </div>
+          </md-card-content>
+        </md-card>
+      </div>
+      <div class="giventask-deadline-block" layout="column">
+        <div>
+          <span>
+            12:00 {{ shareTask.endtime(shareTask.giventask.stream.start, shareTask.giventask.task.end) }}
+            <md-tooltip md-direction="bottom">
+              Сделать до
+            </md-tooltip>
+          </span>
+        </div>
+        <div style="color: {{ shareTask.giventask.titleColor }};margin-top: 15px;">
+          {{ shareTask.giventask.task.title }}
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="fr-view fr-view--space" ng-bind-html="shareTask.giventask.task.desc"></div>
+    </div>
+    <md-divider></md-divider>
+
+    <h4 class="task-custom-header">
+      Отчет
+      <span ng-if="shareTask.giventask.report && shareTask.giventask.report.reportSendAt">
+        {{ shareTask.reportSentTime(shareTask.giventask.report.reportSendAt) }}
+        <md-tooltip md-direction="top">
+          Время отправки отчета
+        </md-tooltip>
+      </span>
+    </h4>
+    <div ng-if="!shareTask.reportEditMode && shareTask.giventask.report" class="fr-view fr-view--space m-overflow-x-hidden" ng-bind-html="shareTask.giventask.shareText || shareTask.giventask.report.message" ></div>
+
+    <md-divider></md-divider>
+    <div style="background-image:linear-gradient(180deg,rgba(100,98,120,.17) 54%,#656379),url(/Header_BG.jpg);">
+      <div style=" margin: 20px auto;width: 300px;margin-bottom: 20px;" layout="column">
+        <a href="http://spacebagel.com/" rel="nofollow">
+          <img width="300" src="/logo.svg">
+        </a>
+        <a href="http://spacebagel.com/" class="landing-link" rel="nofollow">
+          УЗНАТЬ БОЛЬШЕ
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

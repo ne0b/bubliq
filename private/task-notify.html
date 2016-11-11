@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title></title>
+</head>
+<body bgcolor="#F2F2F2" style="background-color: #f2f2f2; margin: 0; padding: 0; width: 100% !important; min-width: 100% !important; height: 100% !important; min-height: 100% !important; font-size: 17px; font-family: Arial, sans-serif;">
+    <div style="font-size: 1px !important; display: none !important;">
+        {{ preheader }}
+    </div>
+  <div style="width: 100% !important; height: 100% !important; background-color: #f2f2f2; padding: 20px 0;">
+    <div style="width: 600px; margin: 0 auto; background: #fff; padding: 20px;">
+      <div style="margin-bottom: 20px; width: 123px; height: 50px;">
+          <a href="https://entry.spacebagel.com">
+            <img height="100%" src="https://entry.spacebagel.com/logo-small.png" width="100%">
+          </a>
+      </div>
+      <div style="padding-bottom: 25px;">
+          <div style="color: #606060; line-height: 160%; font-size: 17px !important;">
+            Привет{{#if name}} {{ name }}{{/if}},<br>
+            Вам выдано новое задание: <a href="https://entry.spacebagel.com/tasks/{{ userId }}/{{ taskId }}">«{{ title }}»</a>, нужно выполнить до {{ deadline }}
+          </div>
+      </div>
+      <div style="padding: 5px;background-image:linear-gradient(180deg,rgba(100,98,120,.17) 54%,#656379),url(https://entry.spacebagel.com/Header_BG.jpg)">
+        <div style="margin:20px auto;width:300px;">
+          <a href="https://entry.spacebagel.com">
+             <img width="300" src="https://entry.spacebagel.com/logo-with-text.png">
+          </a>
+        </div>
+      </div>
+      <div style="margin-top: 20px; color: #606060; font-size: 11px; line-height: 125%;">
+        <span>Вы получили это письмо, потому что зарегистрировались на сайте Космического Бублика.</span>{{#if sentLetterId}}<div>
+              <a href="https://entry.spacebagel.com/unsubscribe?sentletter={{ sentLetterId }}" style="color: #606060;">
+                Отписаться от рассылки
+              </a>
+        </div>{{/if}}
+        <div>
+          Вы можете отписаться от рассылки уведомлений о новых заданиях, перейдя в <a href="https://entry.spacebagel.com/profile" style="color: #606060;">редактирование профиля</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

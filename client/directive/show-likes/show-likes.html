@@ -1,0 +1,18 @@
+<div class="b-show-likes">
+  <span class="b-show-likes__likes-count">
+    понравилось <ng-pluralize count="count"
+                 when="{'0': '',
+                     'one': '1 человеку',
+                     'other': '{} людям'}">
+                </ng-pluralize>:
+  </span>
+
+  <div class="b-show-likes__like" ng-repeat="like in likes">
+    <a ui-sref="profileview({userId:like.userId})">
+      <img ng-src="{{ like.owner.profile.avatar.url.cropped }}" ng-style="like.owner.profile.avatar.style">
+    </a>
+    <md-tooltip md-direction="bottom">
+      <span>{{ like.owner.profile.fullname }}</span>
+    </md-tooltip>
+  </div>
+</div>

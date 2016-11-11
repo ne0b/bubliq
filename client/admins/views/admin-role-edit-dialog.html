@@ -1,0 +1,93 @@
+<md-dialog class="b-dialog" aria-label="roleEdit" ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2> Роль {{ roleEdit.rolePreset.title }} </h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="roleEdit.cancel()">
+        <md-icon md-svg-icon="content:ic_clear_24px" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <form name="roleForm">
+        <md-input-container class="md-block">
+          <label>Название</label>
+          <input required name="title" id="roletitle" type="text" minlength="3" ng-model="roleEdit.rolePreset.title">
+          <div ng-messages="roleForm.title.$error" ng-show="roleForm.title.$dirty">
+            <div ng-message="required">
+              Это обязательное поле!
+            </div>
+            <div ng-message="minlength">
+              Минимальная длина 3 символа!
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Вес</label>
+          <input required name="weight" type="number" ng-model="roleEdit.rolePreset.weight">
+          <div ng-messages="roleForm.weight.$error" ng-show="roleForm.weight.$dirty">
+            <div ng-message="required">
+              Это обязательное поле!
+            </div>
+          </div>
+        </md-input-container>
+        <md-list>
+          <md-list-item>
+            <p> Может управлять пользователями </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.usersmanage"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может назначать наставников и программы </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.mentorassign"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может управлять программами </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.programsmanage"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может удалять чужие сообщения и комментарии </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.moderator"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может просматривать всех пользователей </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.usersviewall"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может просматривать своих пользователей </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.usersviewown"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может просматривать все программы </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.programsviewall"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может просматривать бесплатные программы </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.programsviewfree"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может проверять задания </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.tasksreview"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может назначать задания </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.tasksassign"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может выбирать из всех программ </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.programstakeall"></md-checkbox>
+          </md-list-item>
+          <md-list-item>
+            <p> Может выбирать из бесплатных программ </p>
+            <md-checkbox class="md-secondary md-primary" ng-model="roleEdit.rolePreset.rights.programstakefree"></md-checkbox>
+          </md-list-item>
+        </md-list>
+        <section layout="row" layout-align="center center" layout-wrap>
+          <md-button type="submit" id="edit-role-button" class="md-raised md-primary" ng-click="roleEdit.editRole()" aria-label="edit role" ng-disabled="roleForm.$invalid">
+            Сохранить изменения
+          </md-button>
+        </section>
+      </form>
+    </div>
+  </md-dialog-content>
+</md-dialog>

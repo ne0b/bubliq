@@ -1,0 +1,27 @@
+<div ng-if="trialCtrl.trial" flex layout="row" layout-align="center" layout-wrap class="b-payment__info" >
+  <div class="b-rules-frame transparent-frame content-transparent-frame m-margin-bottom-0 m-text-align-center">
+    <h3>Поздравляем, теперь ты участник пробной недели базовой программы развития иммунитета!</h3>
+    <p>
+      Стартуем 26 ноября, в этот день рано утром будет выложен подробный организационный пост и первое задание.
+      А до этого времени заполни пожалуйста свой профиль.
+    </p>
+    <section layout="column" layout-align="center center" layout-wrap>
+      <md-button ui-sref="index" id="continue" class="md-raised md-primary b-primary-button b-primary-button--trial-continue" aria-label="continue">
+        ПРОДОЛЖИТЬ
+      </md-button>
+    </section>
+    <br/>
+  </div>
+</div>
+
+<div ng-if="trialCtrl.error" flex layout="row" layout-align="center" layout-wrap class="b-payment__info" >
+  <div class="b-rules-frame transparent-frame content-transparent-frame m-margin-bottom-0 m-text-align-center">
+    <h3>Неверный триальный токен! Проверьте правильность указанной ссылки.</h3>
+    <section layout="column" layout-align="center center" layout-wrap>
+      <md-button ui-sref="index" id="continue" class="md-raised md-primary b-primary-button b-primary-button--trial-continue" aria-label="continue">
+        ПРОДОЛЖИТЬ
+      </md-button>
+    </section>
+    <br/>
+  </div>
+</div>

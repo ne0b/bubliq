@@ -1,0 +1,8 @@
+<a ng-if="$root.currentUser" class="user-id" ui-sref="profileview({userId:user._id})">
+  <img ng-src="{{ user.profile.avatar.url.cropped }}" ng-style="user.profile.avatar.style">
+  <span>{{ user.profile.name }} {{ user.profile.lastname }}</span>
+</a>
+<a ng-if="!$root.currentUser" class="user-id">
+  <img ng-src="{{ user.profile.avatar.url.cropped }}" ng-style="user.profile.avatar.style">
+  <span>{{ user.profile.name }} {{ user.profile.lastname }}</span>
+</a>

@@ -1,0 +1,44 @@
+<div flex layout="row" layout-align="center" layout-wrap>
+  <div flex="95" class="transparent-frame content-transparent-frame">
+    <md-tab-body>
+      <md-menu-content class="m-background-color-transparent" style="max-height: none">
+        <md-menu-item ng-if="getUsersManage()" ui-sref-active="active" ng-cloak>
+          <md-button ui-sref="adminusers">
+            <md-icon class="menu-icon  menu-icon--black" md-svg-icon="social:ic_people_24px"></md-icon>
+            Пользователи
+          </md-button>
+        </md-menu-item>
+        <md-menu-item ng-if="getProgramsManage()" ui-sref-active="active" ng-cloak>
+          <md-button ui-sref="adminprograms">
+            <md-icon class="menu-icon menu-icon--black" md-svg-icon="maps:ic_local_library_24px" ></md-icon>
+            Программы
+          </md-button>
+        </md-menu-item>
+        <md-menu-item ng-if="getUsersManage()" ui-sref-active="active" ng-cloak>
+          <md-button ui-sref="adminrolesmanage">
+            <md-icon class="menu-icon menu-icon--black" md-svg-icon="social:ic_person_outline_24px"></md-icon>
+            Роли
+          </md-button>
+        </md-menu-item>
+        <md-menu-item ng-if="getUsersManage()" ui-sref-active="active" ng-cloak>
+          <md-button ui-sref="adminrules">
+            <md-icon class="menu-icon menu-icon--black" md-svg-icon="action:ic_subject_24px"></md-icon>
+            Правила портала
+          </md-button>
+        </md-menu-item>
+        <md-menu-item ng-if="getUsersManage()" ui-sref-active="active" ng-cloak>
+          <md-button ui-sref="adminprogramrules">
+            <md-icon class="menu-icon menu-icon--black" md-svg-icon="action:ic_subject_24px"></md-icon>
+            Правила программы
+          </md-button>
+        </md-menu-item>
+        <md-menu-item ng-if="getProgramsManage()" ui-sref-active="active" ng-cloak>
+          <md-button ui-sref="adminadvert">
+            <md-icon class="menu-icon menu-icon--black" md-svg-icon="editor:ic_attach_money_24px"></md-icon>
+            Рекламное сообщение
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-tab-body>
+  </div>
+</div>

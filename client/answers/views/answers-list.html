@@ -1,0 +1,169 @@
+
+<div flex layout="row" layout-align="center" layout-wrap>
+  <div class="transparent-frame content-transparent-frame" flex="95">
+    <md-progress-circular ng-if="!answersList.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+    <md-subheader ng-if="answersList.dataReady==='error'" class="md-primary">{{ answersList.dataError }}</md-subheader>
+
+    <div ng-if="answersList.dataReady && answersList.answers.length === 0">
+      <div class="b-empty-profile-text">
+        <div>Здесь ты сможешь быстро узнать, как пользователи реагируют на твои сообщения и отчеты. Оставайся на связи!</div>
+      </div>
+    </div>
+
+    <section ng-if="answersList.dataReady && answersList.answers.length > 0" layout="row" layout-align="end center" layout-wrap>
+      <md-button class="b-answers-mark-all-as-read" aria-label="mark all as read" ng-click="answersList.markAllAsRead()">
+        Прочитано всё
+      </md-button>
+    </section>
+
+    <md-list>
+      <md-virtual-repeat-container class="b-answer-virtual-repeat-container" id="vertical-container">
+        <md-list-item md-virtual-repeat="answer in answersList.infiniteAnswers" md-on-demand class="md-2-line answer-list-item">
+          <div class="md-list-item-text answer-list-block">
+            <span ng-if="answer.likesUsers">
+              <span>
+                <div class="chat-message" ng-class="{ active: answersList.activeAnswers[answer._id] }">
+                  <div class="chat-message-body" toggle-answer-active-on-click="'likes'" answer-id="answer._id">
+                    <answers-avatar answer-user-id="answer.likesUsers[answer.likesCount-1].userId"
+                                   answer-user-avatar="answer.likesUsers[answer.likesCount-1].owner.profile.avatar"
+                                   answer-user-fullname="answer.likesUsers[answer.likesCount-1].owner.profile.fullname"
+                                   answer-icon="'action:ic_favorite_24px'"></answers-avatar>
+                    <div class="chat-message-text">
+                      <div ng-if="answer.messageId" class="chat-message-reply">
+                        <i class="material-icons"></i>{{ answer.message.text }}
+                      </div>
+                      <div ng-if="answer.taskId && !answer.commentId" class="b-answers-title">
+                        <a class="redirect-link answers-link" ng-if="answer.task.title" ui-sref="tasks.details({ userId: answer.givenTaskUserId, taskId: answer.taskId })">
+                          Отчет для задания "{{ answer.task.title }}"
+                        </a>
+                      </div>
+                      <div ng-if="answer.commentId" class="b-answers-title">
+                        <a class="redirect-link answers-link" ng-if="answer.task.title" ui-sref="tasks.details({ userId: answer.givenTaskUserId, taskId: answer.commentId.split('.')[0], '#': answer.commentId.split('.')[1] })">
+                          Комментарий к отчету для задания "{{ answer.task.title }}"
+                        </a>
+                      </div>
+                    </div>
+                    <show-likes count="answer.likesCount" likes="answer.likesUsers"></show-likes>
+
+                    <md-progress-circular ng-if="answersList.loadingLikes[answer._id]" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+
+                    <md-button ng-if="answer.messageId" class="b-answers-go-to-chat-button" ui-sref="chatdetails({ chatId:answer.message.chat })">
+                      ПЕРЕЙТИ К ЧАТУ
+                    </md-button>
+                  </div>
+                </div>
+              </span>
+            </span>
+            <span ng-if="answer.fromUserId && !answer.likesUsers">
+              <span ng-if="answer.messageId && answer.inReplyId">
+                <div class="chat-message" ng-class="{ active: answersList.activeAnswers[answer._id] }">
+                  <div class="chat-message-body" toggle-answer-active-on-click answer-id="answer._id">
+                    <answers-avatar answer-user-id="answer.fromUser._id"
+                                   answer-user-avatar="answer.fromUser.profile.avatar"
+                                   answer-icon="'content:ic_redo_24px'"></answers-avatar>
+                    <div class="chat-message-header">
+                      <strong>
+                        <a class="redirect-link" ui-sref="profileview({userId:answer.fromUser._id})">
+                          {{ answer.fromUser.profile.name }}
+                        </a>
+                      </strong>
+                      <small>{{ answer.sentTime }}</small>
+                    </div>
+                    <div class="chat-message-text">
+                      <div class="chat-message-reply">
+                        <i class="material-icons"></i>{{ answer.inReplyMessage.text }}
+                      </div>
+                      <div class="b-chat-message-text">
+                        {{ answer.message.text }}
+                      </div>
+
+                      <md-button class="b-answers-go-to-chat-button" ui-sref="chatdetails({ chatId:answer.message.chat })">
+                        ПЕРЕЙТИ К ЧАТУ
+                      </md-button>
+                    </div>
+                  </div>
+                </div>
+              </span>
+              <span ng-if="answer.commentId && answer.inReplyToCommentId">
+                <div class="chat-message" ng-class="{ active: answersList.activeAnswers[answer._id] }">
+                  <div class="chat-message-body" toggle-answer-active-on-click answer-id="answer._id">
+                    <answers-avatar answer-user-id="answer.fromUser._id"
+                                   answer-user-avatar="answer.fromUser.profile.avatar"
+                                   answer-icon="'content:ic_redo_24px'"></answers-avatar>
+                    <div class="chat-message-header">
+                      <strong>
+                        <a class="redirect-link" ui-sref="profileview({userId:answer.fromUser._id})">
+                          {{ answer.fromUser.profile.name }}
+                        </a>
+                      </strong>
+                      <small>{{ answer.sentTime }}</small>
+                    </div>
+                    <div class="chat-message-text">
+                      <div class="b-chat-message-text">
+                        <a class="redirect-link answers-link" ng-if="answer.task" ui-sref="tasks.details({ userId: answer.givenTaskUserId, taskId: answer.commentId.split('.')[0], '#': answer.commentId.split('.')[1] })">
+                          ответил
+                        </a>
+                        на
+                        <a class="redirect-link answers-link" ng-if="answer.task" ui-sref="tasks.details({ userId: answer.givenTaskUserId, taskId: answer.commentId.split('.')[0], '#': answer.inReplyToCommentId.split('.')[1] })">
+                          ваш комментарий
+                        </a>
+                        к
+                        <a class="redirect-link answers-link" ng-if="answer.task" ui-sref="tasks.details({ userId: answer.givenTaskUserId, taskId: answer.commentId.split('.')[0] })">
+                         отчету <span ng-if="answer.ownerFullname && answer.givenTaskUserId !== $root.currentUser._id">пользователя {{ answer.ownerFullname }}</span> для задания "{{ answer.task.title }}"
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </span>
+            <span ng-if="answer.taskId && !answer.likesUsers">
+              <div class="chat-message" ng-class="{ active: answersList.activeAnswers[answer._id] }">
+                <div class="chat-message-body" toggle-answer-active-on-click answer-id="answer._id">
+                  <answers-avatar ng-if="answer.fromUser" answer-user-id="answer.fromUser._id"
+                                 answer-user-avatar="answer.fromUser.profile.avatar"
+                                 answer-icon="'content:ic_redo_24px'"></answers-avatar>
+                  <answers-avatar ng-if="!answer.fromUser" answer-user-avatar="answer.anonAvatar"
+                                 answer-icon="'content:ic_flag_24px'"
+                                 answer-task-rated="answer.taskRated"></answers-avatar>
+                  <div class="chat-message-header">
+                    <strong>
+                      <a class="redirect-link" ng-if="answer.fromUser" ui-sref="profileview({userId:answer.fromUser._id})">
+                        {{ answer.fromUser.profile.name }}
+                      </a>
+                      <a class="redirect-link" ng-if="!answer.fromUser" href="/">
+                        Космический бублик
+                      </a>
+                    </strong>
+                    <small>{{ answer.sentTime }}</small>
+                  </div>
+                  <div class="chat-message-text">
+                    <div ng-if="!answer.taskRated && answer.taskRated !== 0" class="b-chat-message-text">
+                      прокомментировал отчет
+                      <a class="redirect-link answers-link" ng-if="answer.ownerFullname && answer.givenTaskUserId !== $root.currentUser._id" ui-sref="tasks.details({ userId: answer.givenTaskUserId, taskId: answer.taskId })">
+                        пользователя {{ answer.ownerFullname }}</a><span ng-if="answer.fromSubscription">, на который вы подписаны,</span> для задания
+                      <a class="redirect-link answers-link" ng-if="answer.task.title" ui-sref="tasks.details({ userId: answer.givenTaskUserId, taskId: answer.taskId, '#': answer.commentId.split('.')[1] })">
+                        "{{ answer.task.title }}"
+                      </a>
+                    </div>
+                    <div ng-if="answer.taskRated || answer.taskRated === 0" class="b-chat-message-text">
+                      Ваш отчет для
+                      <a class="redirect-link answers-link" ng-if="answer.task.title" ui-sref="tasks.details({ userId: answer.givenTaskUserId, taskId: answer.taskId })">
+                        задания "{{ answer.task.title }}"
+                      </a>
+                      принят, оценка: {{ answer.taskRated }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <button ng-click="answersList.markAsRead(answer._id, $index, !answer.read)" class="b-answers-read md-secondary md-button md-icon-button"  ng-class="{ active: answersList.activeAnswers[answer._id] }">
+              <md-icon ng-if="!answer.read" class="material-icons" md-svg-icon="action:ic_done_24px"></md-icon>
+              <md-icon ng-if="answer.read" class="material-icons" md-svg-icon="content:ic_undo_24px"></md-icon>
+            </button>
+          </div>
+        </md-list-item>
+      </md-virtual-repeat-container>
+    </md-list>
+  </div>
+</div>

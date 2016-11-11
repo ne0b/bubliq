@@ -1,0 +1,16 @@
+<md-progress-circular ng-if="!adminAdvert.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+<md-subheader ng-if="adminAdvert.dataReady==='error'" class="md-primary">{{ adminAdvert.dataError }}</md-subheader>
+
+<div flex layout="row" layout-align="center" layout-wrap ng-if="adminAdvert.dataReady">
+  <div flex="95" class="transparent-frame content-transparent-frame">
+    <form class="form-horizontal col-xs-12" ng-cloak>
+       <md-input-container class="md-block">
+         <label>Введите рекламное сообщение</label>
+         <textarea name="advertText" id="advertText" ng-model="adminAdvert.advert.text"></textarea>
+       </md-input-container>
+    </form>
+    <md-button class="md-raised md-warn" ng-click="adminAdvert.editAdvert()" aria-label="saverules">
+      Сохранить
+    </md-button>
+  </div>
+</div>

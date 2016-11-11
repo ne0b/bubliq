@@ -1,0 +1,4 @@
+# restore database on stage
+# its synced on time with dbase stop/start service
+# by asor
+20 3 * * * root mongorestore --host dbase.local:27017 --db stage --drop /var/backups/mongodb/entry

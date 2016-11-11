@@ -1,0 +1,8 @@
+<div class="comment-like" ng-repeat="like in likes">
+  <a ui-sref="profileview({userId:like.userId})">
+    <img ng-src="{{ like.owner.profile.avatar.url.cropped }}" ng-style="like.owner.profile.avatar.style">
+  </a>
+  <md-tooltip md-direction="bottom">
+    <span>{{ like.owner.profile.name }} {{ like.owner.profile.lastname }}</span>
+  </md-tooltip>
+</div>

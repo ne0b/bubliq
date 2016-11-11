@@ -1,0 +1,72 @@
+<md-progress-circular ng-if="!adminStreams.dataReady" class="md-warn md-hue-1 b-loader" md-mode="indeterminate"></md-progress-circular>
+<md-subheader ng-if="adminStreams.dataReady==='error'" class="md-primary">{{ adminStreams.dataError }}</md-subheader>
+
+<div flex layout="row" layout-align="center" layout-wrap ng-if="adminStreams.dataReady">
+  <div flex="95" class="transparent-frame content-transparent-frame">
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab id="streams-stars">
+        <md-tab-label>Звездочки потока</md-tab-label>
+        <md-tab-body>
+          <md-list ng-if="adminStreams.stars.length > 0">
+            <md-list-item ng-repeat="star in adminStreams.stars" class="md-with-secondary secondary-button-padding">
+              <md-button ng-click="adminStreams.showEditStar($event, star)" class="md-no-style">
+                <div class="md-list-item-inner ng-scope">
+                  <p> {{ star.title }} </p>
+                </div>
+              </md-button>
+              <div class="md-secondary">
+                <md-button class="md-warn margin-reset" ng-click="adminStreams.deleteStar(star._id)">Удалить</md-button>
+              </div>
+            </md-list-item>
+          </md-list>
+          <md-divider></md-divider>
+          <section layout="row" layout-align="center center" layout-wrap>
+            <md-button id="add-star-button" class="md-raised md-primary" ng-click="adminStreams.showEditStar($event, false)" aria-label="addstar">
+              Добавить звездочку в поток
+            </md-button>
+          </section>
+        </md-tab-body>
+      </md-tab>
+      <md-tab id="stream-details">
+        <md-tab-label>Информация о потоке</md-tab-label>
+        <md-tab-body>
+          <div class="md-content" layout-padding>
+            <form name="streamForm">
+              <md-input-container class="md-block">
+                <label>Название</label>
+                <input required name="title" id="title" type="text" minlength="6" ng-model="adminStreams.stream.title">
+                <div ng-messages="adminStreams.streamForm.title.$error" ng-show="adminStreams.streamForm.title.$dirty">
+                  <div ng-message="required">
+                    Это обязательное поле!
+                  </div>
+                  <div ng-message="minlength">
+                    Минимальная длина 6 символов!
+                  </div>
+                </div>
+              </md-input-container>
+
+              <h4>Координатор</h4>
+              <md-autocomplete md-selected-item="adminStreams.stream.coordinator" md-search-text="adminStreams.searchCT" md-items="coordinator in adminStreams.searchCoordinator(adminStreams.searchCT)" md-item-text="coordinator.fullname">
+                <span md-highlight-text="adminStreams.searchCT">{{coordinator.fullname}}</span>
+              </md-autocomplete>
+
+              <h4>Тренер</h4>
+              <md-autocomplete md-selected-item="adminStreams.stream.trainer" md-search-text="adminStreams.searchTT" md-items="trainer in adminStreams.searchTrainer(adminStreams.searchTT)" md-item-text="trainer.fullname">
+                <span md-highlight-text="adminStreams.searchTT">{{ trainer.fullname }}</span>
+              </md-autocomplete>
+
+              <h4 style="color:red;">Для показа всех координаторов/тренеров введите символ "+" в поле поиска.</h4>
+
+              <md-datepicker required ng-model="adminStreams.stream.start" md-placeholder="Дата старта"></md-datepicker>
+              <section layout="row" layout-align="center center" layout-wrap>
+                <md-button id="save-stream-button" class="md-raised md-primary" ng-click="adminStreams.editStream()" aria-label="save stream" ng-disabled="adminTasks.streamForm.$invalid()">
+                  Сохранить изменения
+                </md-button>
+              </section>
+            </form>
+          </div>
+        </md-tab-body>
+      </md-tab>
+    </md-tabs>
+  </div>
+</div>
